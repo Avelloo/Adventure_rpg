@@ -1,2 +1,14 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("biba2_test");
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Adventure
+{
+    public static class Program
+    {
+        static void Main(string[] args)
+        {
+
+        }
+    }
+}
