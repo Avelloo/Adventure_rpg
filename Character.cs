@@ -10,24 +10,32 @@ namespace Adventure_rpg
     {
         string name = "";
         string proffesion = "";
-        int strength = 0;
-        int agility = 0;
-        int intelligence = 0;
+        
+        int strength = 1;
+        int agility = 1;
+        int intelligence = 1;
+        int currentExp = 0;
+        int charLVL = 1;
 
-        int startPoints = 5;
+        bool physicWeapon = false;
+        bool magicWeapon = false;
+        bool bowWeapon = false;
+
+        int startPoints = 1;
 
         public void CreateCharacter() //создание персонажа
         {
          
             Console.Clear();    
-            Console.WriteLine("Вы в меню создания персонажа. Введите имя: ");
+            Console.WriteLine("\nВы в меню создания персонажа. Введите имя: ");
             name = Console.ReadLine();
-            if (name == null || name == "") CreateCharacter();
+
+            if (name == null || name == "" || name.Trim().Length<=1) CreateCharacter();
 
             selection:
             Console.Clear();
-            Console.WriteLine("Выберите класс:");
-            Write(" Воин     - герой ближнего боя,\n\t +1 к силе со старта игры, может использовать двуручное оружие.\n", "Воин", ConsoleColor.Red);
+            Console.WriteLine("\nВыберите класс:");
+            Write(" Воин     - герой ближнего боя,\n\t +1 к силе со старта игры, может использовать мечи и щиты.\n", "Воин", ConsoleColor.Red);
             Write("\n Маг      - герой дальнего боя,\n\t +1 к инт. со старта игры, может использовать магическое оружие.\n", "Маг", ConsoleColor.Blue);
             Write("\n Лучник   - герой дальнего боя,\n\t +1 к ловкости со старта игры, может использовать лук.\n", "Лучник", ConsoleColor.Green);
             Write("\n Странник - герой универсал,\n\t -1 к навыкам для распределения, может использовать все типы оружия.", "Странник", ConsoleColor.DarkMagenta);
@@ -41,18 +49,24 @@ namespace Adventure_rpg
                 case "1":
                     proffesion = "Воин";
                     strength += 1;
+                    physicWeapon = true;
                     break;
                 case "2":
                     proffesion = "Маг";
                     intelligence += 1;
+                    magicWeapon = true;
                     break;
                 case "3":
                     proffesion = "Лучник";
                     agility += 1;
+                    bowWeapon = true;
                     break;
                 case "4":
                     proffesion = "Странник";
                     startPoints -= 1;
+                    physicWeapon = true;
+                    magicWeapon = true;
+                    bowWeapon = true;
                     break;
                 default:
                     goto selection;
@@ -61,14 +75,14 @@ namespace Adventure_rpg
 
             }
 
-            SpreadingStartPoints(startPoints);
+            SpreadingPoints(startPoints);
 
 
         }
-        void SpreadingStartPoints(int points) //распределение стартовых очков
+        void SpreadingPoints(int points) //распределение очков
         {
             Console.Clear();
-            do
+            while (points > 0)
             {
                 selectPoints:
                 Console.Clear();
@@ -94,13 +108,42 @@ namespace Adventure_rpg
                     default :
                         goto selectPoints;
                 }
-                
+                if(strength > 10)
+                {
+                    strength = 10;
+                    points += 1;
+                    Console.WriteLine("Сила вкачана на максимум!");
+                    Console.WriteLine("Нажмите любую клавишу, чтобы продолжить.");
+                    Console.ReadLine();
+                    goto selectPoints;
+                }
+                if (agility > 10)
+                {
+                    agility = 10;
+                    points += 1;
+                    Console.WriteLine("Ловкость вкачана на максимум!");
+                    Console.WriteLine("Нажмите любую клавишу, чтобы продолжить.");
+                    Console.ReadLine();
+                    goto selectPoints;
+                }
+                if (intelligence > 10)
+                {
+                    intelligence = 10;
+                    points += 1;
+                    Console.WriteLine("Интеллект вкачан на максимум!");
+                    Console.WriteLine("Нажмите любую клавишу, чтобы продолжить.");
+                    Console.ReadLine();
+                    goto selectPoints;
+                }
+
+
             }
-            while(points > 0);
+            
             Console.Clear();
             Console.WriteLine();
             DisplayCharacterPoints();
             Console.WriteLine("\n\nУ вас осталось {0} свободных очков. Нажмите любую клавишу, чтобы продолжить.\n", points);
+            startPoints = 0;
             Console.ReadLine();
         }
 
@@ -108,19 +151,40 @@ namespace Adventure_rpg
         {
             
             Console.Write("{0,-11}", "Сила:");
-            for (int i = 1; i <= strength; i++)
-            {
-                Console.Write("(+)");
+            for (int i = 1; i <= 10; i++)
+            {   
+                if(strength >= i)
+                {
+                    Console.Write("(+)");
+                }
+                else
+                {
+                    Console.Write("( )");
+                }
             }
             Console.Write("\n{0,-11}", "Ловкость:");
-            for (int i = 1; i <= agility; i++)
+            for (int i = 1; i <= 10; i++)
             {
-                Console.Write("(+)");
+                if (agility >= i)
+                {
+                    Console.Write("(+)");
+                }
+                else
+                {
+                    Console.Write("( )");
+                }
             }
             Console.Write("\n{0,-11}", "Интеллект:");
-            for (int i = 1; i <= intelligence; i++)
+            for (int i = 1; i <= 10; i++)
             {
-                Console.Write("(+)");
+                if (intelligence >= i)
+                {
+                    Console.Write("(+)");
+                }
+                else
+                {
+                    Console.Write("( )");
+                }
             }
         }
 
