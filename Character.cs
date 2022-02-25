@@ -86,8 +86,8 @@ namespace Adventure_rpg
             {
                 selectPoints:
                 Console.Clear();
-                Console.WriteLine("Что будем качать?\n У вас осталось {0} свободных очков.\n", points);
-
+                Console.WriteLine("Что будем качать?\nОчков осталось: {0}.\n", points);
+                
                 DisplayCharacterPoints();
 
                 Console.WriteLine("\n1 - Качать силу, 2 - Качать ловкость, 3 - Качать интеллект");
