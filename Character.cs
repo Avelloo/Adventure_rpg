@@ -23,9 +23,15 @@ namespace Adventure_rpg
 
         int startPoints = 1;
 
+        List<object> items = new List<object>();
+
+        
+
+
+
         public void CreateCharacter() //создание персонажа
         {
-         
+            
             Console.Clear();    
             Console.WriteLine("\nВы в меню создания персонажа. Введите имя: ");
             name = Console.ReadLine();
@@ -142,9 +148,9 @@ namespace Adventure_rpg
             Console.Clear();
             Console.WriteLine();
             DisplayCharacterPoints();
-            Console.WriteLine("\n\nУ вас осталось {0} свободных очков. Нажмите любую клавишу, чтобы продолжить.\n", points);
+            Console.WriteLine("\n\nУ вас нет очков для распределения, нажмите любую клавишу, чтобы продолжить");
             startPoints = 0;
-            Console.ReadLine();
+            Console.ReadKey();
         }
 
         void DisplayCharacterPoints()
@@ -231,9 +237,32 @@ namespace Adventure_rpg
             Write($"Сила: {strength}\n", "Сила", ConsoleColor.DarkRed);
             Write($"Ловкость: {agility}\n", "Ловкость", ConsoleColor.DarkGreen);
             Write($"Интеллект: {intelligence}\n", "Интеллект", ConsoleColor.DarkBlue);
+
+
+            Weapon testBow = new Weapon("Лук боли", "Как послезавтра...","Лук", 20);
+            Weapon testSword = new Weapon("Меч попы", "Пердит-смердит", "Меч",15);
+            items.Add(testBow);
+            items.Add(testSword);
+
+            Console.WriteLine("Ваши оружия:");
+            foreach (Weapon i in items)
+            {
+
+                Console.WriteLine("Название: " + i.name);
+                Console.WriteLine("Описание: " + i.description);
+                Console.WriteLine("Урон: " + i.damage);
+                Console.WriteLine("Тип: " + i.type);
+            }
+
             Console.WriteLine("\nЛюбая клавиша - продолжить.");
-            Console.ReadLine();
+            Console.ReadKey();
         }
+
+        
+            
+
+        
 
     }
 }
+
