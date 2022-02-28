@@ -24,17 +24,35 @@ namespace Adventure_rpg
         int startPoints = 1;
 
         List<object> items = new List<object>();
+        Weapon testBow = new Weapon("Лук боли", "Как послезавтра...", "Лук", 20);
+        Weapon testSword = new Weapon("Меч попы", "Пердит-смердит", "Меч", 15);
+        Weapon testOrb = new Weapon("Меч попы", "Пердит-смердит", "Орб", 13);
 
-        
+
+
 
 
 
         public void CreateCharacter() //создание персонажа
         {
+            beginning:
+            Console.Clear();
+            Console.WriteLine("Приветствую в игре. Для начала нужно ввести имя. Сами(0) или рандомно(1)?");
+            switch (Console.ReadLine())
+            {
+                case "0":
+                    Console.WriteLine("\nВведите имя: ");
+                    name = Console.ReadLine();
+                    break;
+                case "1":
+                    name = GeneratingName();
+                    break;
+                default:
+                    goto beginning;
+            }
+           
+
             
-            Console.Clear();    
-            Console.WriteLine("\nВы в меню создания персонажа. Введите имя: ");
-            name = Console.ReadLine();
 
             if (name == null || name == "" || name.Trim().Length<=1) CreateCharacter();
 
@@ -213,6 +231,8 @@ namespace Adventure_rpg
 
         public void Greetings() // вывод информации о игроке
         {
+            
+           
             ConsoleColor color = ConsoleColor.White;
             switch (proffesion)
             {
@@ -240,8 +260,8 @@ namespace Adventure_rpg
 
             
             
-            items.Add(testBow);
-            items.Add(testSword);
+           items.Add(testBow); 
+           items.Add(testSword);
 
             Console.WriteLine("Ваше оружие:");
             foreach (Weapon i in items)
@@ -259,6 +279,37 @@ namespace Adventure_rpg
             Console.ReadKey();
         }
 
+        static string GeneratingName()
+        {
+            string[] firstSyllabels = {"Ами","Ана", "Арт","Бле","Бог","Бру","Вал","Вла","Вен","Гав","Ген","Гле",
+                                        "Дав","Дан","Джо","Ев","Ели","Ерем","Иго","Ирак","Инно","Лук","Люд","Ленар",
+                                        "Мак","Ник","Осм","Пав","Пер","Рав","Руб","Рудол","Тим","Фар","Филл","Хак",
+                                        "Цез","Чин","Шам","Эдг","Эрм","Юлин","Ян","Яро"};
+
+            string[] secondSyllabels = {"рон","нап","гап","иан","мат","лан","маз","он","дий","сек","мий","ан","мет",
+                                        "слав","слев","жамин","алий","орис","улат","ор","ад","ас","дан","димир","ван",
+                                        "ндер","гиз","орь","тан","аак","арл","ма","енс","омир","офер","овик","ётр","ид",
+                                        "епан","урен","ихон"};
+
+            string[] thirdSyllabels = {"Ива","Сми","Пет","Нов","Вол","Мор","Але","Фед","Мон","Лебе","Сем","Его","Кор","Степ",
+                                        "Орл","Пав","Нико","Анд","Мак","Ники","Зах","Соло","Зай","Бори","Вино","Кова","Бело",
+                                        "Медве","Анто","Тара","Жук","Бара","Фили","Гера","Богда","Сидо","Матве","Тито","Миро",
+                                        "Крыл","Черн","Ефи","Федо","Щерб","Наза"};
+
+            string[] fourthSyllabels = {"нов","цов","ов","озов","лов","льев","ев","ров","цев","влев","рьев","дров","лев","лёв",
+                                        "ин","мов","ков","дов","ев","нов","им","ин","ев"};
+
+            Random rand = new Random();
+
+
+            string result = firstSyllabels[rand.Next(0, firstSyllabels.Length)] +
+                            secondSyllabels[rand.Next(0, secondSyllabels.Length)] + " " +
+                            thirdSyllabels[rand.Next(0, thirdSyllabels.Length)] +
+                            fourthSyllabels[rand.Next(0, fourthSyllabels.Length)];
+            return result;
+
+        }
+            
         
             
 

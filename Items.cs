@@ -9,11 +9,7 @@ namespace Adventure_rpg
 
     class Items
     {   
-        public void InitializeItems()
-        {
-            Weapon testBow = new Weapon("Лук боли", "Как послезавтра...", "Лук", 20);
-            Weapon testSword = new Weapon("Меч попы", "Пердит-смердит", "Меч", 15);
-        }
+        
         
     }
 
@@ -35,6 +31,11 @@ namespace Adventure_rpg
        
     }
     
+    
+    
+        
+    
+
 
 
 
