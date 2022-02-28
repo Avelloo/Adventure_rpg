@@ -238,20 +238,21 @@ namespace Adventure_rpg
             Write($"Ловкость: {agility}\n", "Ловкость", ConsoleColor.DarkGreen);
             Write($"Интеллект: {intelligence}\n", "Интеллект", ConsoleColor.DarkBlue);
 
-
-            Weapon testBow = new Weapon("Лук боли", "Как послезавтра...","Лук", 20);
-            Weapon testSword = new Weapon("Меч попы", "Пердит-смердит", "Меч",15);
+            
+            
             items.Add(testBow);
             items.Add(testSword);
 
-            Console.WriteLine("Ваши оружия:");
+            Console.WriteLine("Ваше оружие:");
             foreach (Weapon i in items)
             {
 
-                Console.WriteLine("Название: " + i.name);
+                Console.Write(i.type + " -> " + i.name);
+                Console.Write(". Урон: " + i.damage + "\n");
                 Console.WriteLine("Описание: " + i.description);
-                Console.WriteLine("Урон: " + i.damage);
-                Console.WriteLine("Тип: " + i.type);
+               
+                
+                
             }
 
             Console.WriteLine("\nЛюбая клавиша - продолжить.");
