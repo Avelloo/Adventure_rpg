@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Adventure_rpg
+﻿namespace Adventure_rpg
 {
     internal class Character
     {
+      
         string name = "";
         string proffesion = "";
         
@@ -16,6 +11,9 @@ namespace Adventure_rpg
         int intelligence = 1;
         int currentExp = 0;
         int charLVL = 1;
+        int money = 0;
+
+        InventorySystem inventory = new InventorySystem();
 
         bool physicWeapon = false;
         bool magicWeapon = false;
@@ -23,10 +21,7 @@ namespace Adventure_rpg
 
         int startPoints = 1;
 
-        List<object> items = new List<object>();
-        Weapon testBow = new Weapon("Лук боли", "Как послезавтра...", "Лук", 20);
-        Weapon testSword = new Weapon("Меч попы", "Пердит-смердит", "Меч", 15);
-        Weapon testOrb = new Weapon("Меч попы", "Пердит-смердит", "Орб", 13);
+
 
 
 
@@ -37,7 +32,7 @@ namespace Adventure_rpg
         {
             beginning:
             Console.Clear();
-            Console.WriteLine("Приветствую в игре. Для начала нужно ввести имя. Сами(0) или рандомно(1)?");
+            Console.WriteLine("Для начала нужно ввести имя. Сам(0) или рандомно(1)?");
             switch (Console.ReadLine())
             {
                 case "0":
@@ -58,13 +53,12 @@ namespace Adventure_rpg
 
             selection:
             Console.Clear();
-            Console.WriteLine("\nВыберите класс:");
-            Write(" Воин     - герой ближнего боя,\n\t +1 к силе со старта игры, может использовать мечи и щиты.\n", "Воин", ConsoleColor.Red);
-            Write("\n Маг      - герой дальнего боя,\n\t +1 к инт. со старта игры, может использовать магическое оружие.\n", "Маг", ConsoleColor.Blue);
-            Write("\n Лучник   - герой дальнего боя,\n\t +1 к ловкости со старта игры, может использовать лук.\n", "Лучник", ConsoleColor.Green);
-            Write("\n Странник - герой универсал,\n\t -1 к навыкам для распределения, может использовать все типы оружия.", "Странник", ConsoleColor.DarkMagenta);
+            Console.WriteLine("Выберите класс:");
+            systemInterface.ColorWrite(" Воин     - герой ближнего боя,\n\t +1 к силе со старта игры, может использовать мечи и щиты.\n", "Воин", ConsoleColor.Red);
+            systemInterface.ColorWrite("\n Маг      - герой дальнего боя,\n\t +1 к инт. со старта игры, может использовать магическое оружие.\n", "Маг", ConsoleColor.Blue);
+            systemInterface.ColorWrite("\n Лучник   - герой дальнего боя,\n\t +1 к ловкости со старта игры, может использовать лук.\n", "Лучник", ConsoleColor.Green);
+            systemInterface.ColorWrite("\n Странник - герой универсал,\n\t -1 к навыкам для распределения, может использовать все типы оружия.", "Странник", ConsoleColor.DarkMagenta);
             Console.WriteLine("\n\n 1 - воин, 2 - маг\n 3 - лучник, 4 - странник");
-
             Console.WriteLine("\nТвой выбор: ");
             string choise = Console.ReadLine();
 
@@ -212,27 +206,15 @@ namespace Adventure_rpg
             }
         }
 
-        static void Write(string text, string coloredWord, ConsoleColor color) //Вывод слова с цветом
-        {
-
-            string[] normalParts = text.Split(new string[] { coloredWord }, StringSplitOptions.None);
-            for (int i = 0; i < normalParts.Length; i++)
-            {
-                Console.ResetColor();
-                Console.Write(normalParts[i]);
-                if (i != normalParts.Length - 1)
-                {
-                    Console.ForegroundColor = color;
-                    Console.Write(coloredWord);
-                }
-            }
-        } 
+        
 
 
         public void Greetings() // вывод информации о игроке
         {
             
-           
+            inventory.addItemToInventory(ItemList.allItems["test2"],15);
+            inventory.addItemToInventory(ItemList.allItems["test"], 2);
+
             ConsoleColor color = ConsoleColor.White;
             switch (proffesion)
             {
@@ -251,35 +233,43 @@ namespace Adventure_rpg
 
             }
             Console.Clear();
-            Write($"Привет, {name}.", name, ConsoleColor.Blue);
-            Write($" Твой класс {proffesion}.\n", proffesion, color);
+            systemInterface.ColorWrite($"Привет, {name}.", name, ConsoleColor.Blue,5);
+            systemInterface.ColorWrite($" Твой класс {proffesion}.\n", proffesion, color,5);
             Console.Write("Твои статы:\n");
-            Write($"Сила: {strength}\n", "Сила", ConsoleColor.DarkRed);
-            Write($"Ловкость: {agility}\n", "Ловкость", ConsoleColor.DarkGreen);
-            Write($"Интеллект: {intelligence}\n", "Интеллект", ConsoleColor.DarkBlue);
+            systemInterface.ColorWrite($"Сила: {strength}\n", "Сила", ConsoleColor.DarkRed,5);
+            systemInterface.ColorWrite($"Ловкость: {agility}\n", "Ловкость", ConsoleColor.DarkGreen,5);
+            systemInterface.ColorWrite($"Интеллект: {intelligence}\n", "Интеллект", ConsoleColor.DarkBlue,5);
 
             
             
-           items.Add(testBow); 
-           items.Add(testSword);
 
-            Console.WriteLine("Ваше оружие:");
-            foreach (Weapon i in items)
+            Console.WriteLine("Ваш инвентарь:");
+            for(int i = 0; i < inventory.GetMaxSlots(); i++)
             {
+                string cellName = "Пусто";
+                string cellDescription = "Пусто";
+                int cellAmount = 0;
+                if (inventory.IsCellExist(i))
+                {
+                  cellName = inventory.GetInventoryCell(i).thisItem.name;
+                  cellDescription = inventory.GetInventoryCell(i).thisItem.description;
+                  cellAmount = inventory.GetInventoryCell(i).Quantity;
+                  Console.WriteLine($"Предмет {cellName}, описание {cellDescription} и количество {cellAmount}.");
+                }
+                else
+                {
+                    Console.WriteLine($"В ячейке {i + 1} ничего нет.");
+                }
+                                        
 
-                Console.Write(i.type + " -> " + i.name);
-                Console.Write(". Урон: " + i.damage + "\n");
-                Console.WriteLine("Описание: " + i.description);
-               
-                
                 
             }
-
             Console.WriteLine("\nЛюбая клавиша - продолжить.");
+            
             Console.ReadKey();
         }
 
-        static string GeneratingName()
+        static string GeneratingName() //генерация имени(1+2 слоги) и фамилии(3+4 слоги)
         {
             string[] firstSyllabels = {"Ами","Ана", "Арт","Бле","Бог","Бру","Вал","Вла","Вен","Гав","Ген","Гле",
                                         "Дав","Дан","Джо","Ев","Ели","Ерем","Иго","Ирак","Инно","Лук","Люд","Ленар",
@@ -309,9 +299,7 @@ namespace Adventure_rpg
             return result;
 
         }
-            
-        
-            
+
 
         
 
