@@ -53,8 +53,43 @@ namespace Adventure_rpg
 
         public void removeItemFromInventory(Item item, int amount)
         {
-            Console.WriteLine("removeItemFromInventory еще не сделано");
+            int deletedAmount = amount;
+            if (isCapableOfDeleting(item,amount))
+            {
+                while (deletedAmount > 0)
+                {                    
+                    if (Inventory.Exists(x => x.thisItem.name == item.name && x.Quantity > 0))
+                    {
+                        InventoryCell currentCell = Inventory.Last(x => (x.thisItem.name == item.name && x.Quantity > 0));
+                        if (amount > currentCell.Quantity)
+                        {
+                            deletedAmount -= currentCell.Quantity;
+                            currentCell.Quantity = 0;
+                        }                        
+                        else if(amount < currentCell.thisItem.maxSTACK)
+                        {
+                            deletedAmount -= currentCell.Quantity;
+                            currentCell.Quantity -= amount;                         
+
+                        }
+                        
+                    }
+                    if(Inventory.Exists(x => x.thisItem.name == item.name && x.Quantity == 0))
+                    {
+                        InventoryCell currentCell = Inventory.First(x => (x.thisItem.name == item.name && x.Quantity == 0));
+                        Inventory.Remove(currentCell);
+                    }
+                    amount = deletedAmount;
+                }
+            }
+            else
+            {
+                throw new Exception("Попытка удалить без проверки на возможность!");
+            }
+            
+            
         }
+
 
         public InventoryCell GetInventoryCell(int id)
         {
@@ -64,23 +99,87 @@ namespace Adventure_rpg
             }
             else
             {
-                throw new Exception("Нет данных в этой ячейке инвентаря!!");
+                throw new Exception("Нет данных в этой ячейке инвентаря!");
             }
+        }
+
+        public void StackInventory()
+        {
+
         }
         public bool IsCellExist(int id)
         {
             return Inventory.ElementAtOrDefault(id) != null ? true : false;
         }
 
+        public int CountItem(Item item)
+        {
+            int count = 0;
+
+            for (int i = 0; i < GetMaxSlots(); i++)
+            {
+
+                if (IsCellExist(i))
+                {
+                    InventoryCell thisCell = GetInventoryCell(i);
+                    if (thisCell.thisItem.name == item.name && thisCell.Quantity > 0)
+                    {
+                        count += thisCell.Quantity;
+                    }
+
+                }
+            }
+
+            //Console.WriteLine("ПРЕДМЕТ: " + item.name);
+            //Console.WriteLine("НАСЧИТАЛ: " + count);
+            return count;
+
+        }
+
+        public bool isCapableOfDeleting(Item item, int amount)//Проверка, можно ли удалить нужное колво предметов
+        {
+            return amount <= CountItem(item) ? true : false;
+        } 
+        public bool isCapableOfAdding(Item item, int amount)//Проверка, вместится ли нужное количество предметов данного типа 
+        {
+           
+            int maxHold = 0;
+            for (int i = 0; i < GetMaxSlots(); i++)
+            {
+                
+                if (IsCellExist(i))
+                {
+                    InventoryCell thisCell = GetInventoryCell(i);
+                    if (thisCell.thisItem.name == item.name && thisCell.Quantity < item.maxSTACK)
+                    {
+                        maxHold += item.maxSTACK - thisCell.Quantity;
+                    }                  
+                  
+                    
+                }
+                else
+                {
+                    maxHold += item.maxSTACK;  
+                }
+
+
+
+            }
+            //Console.WriteLine("ПРЕДМЕТ:" + item.name);
+            //Console.WriteLine("ХОЧУ ХРАНИТЬ:" + amount);
+            //Console.WriteLine("ГОТОВ ХРАНИТЬ:" + maxHold);
+
+            return maxHold >= amount ? true : false;
+        } 
         public int GetMaxSlots()
         {
             return maxInventorySlots;
         }
     }
 
-    public class InventoryCell
+    public class InventoryCell //класс ячейки
     {
-        public int Quantity { get; private set; }
+        public int Quantity { get; set; }
         public Item thisItem { get; private set; }
 
         public InventoryCell(Item thisItem, int quantity)
@@ -93,5 +192,9 @@ namespace Adventure_rpg
         {
             Quantity += amountToAdd;
         }
-    } //класс ячейки
+        public void RemoveFromCell(int amountToRemove)
+        {
+            Quantity -= amountToRemove;
+        }
+    } 
 }

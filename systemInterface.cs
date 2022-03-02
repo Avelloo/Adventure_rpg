@@ -55,7 +55,7 @@ namespace Adventure_rpg
 
                     foreach (char ch1 in coloredWord)
                     {
-                        Thread.Sleep(delay*7);
+                        Thread.Sleep(delay * 4);
                         Console.Write(ch1);
                     }
                 }

@@ -211,9 +211,12 @@
 
         public void Greetings() // вывод информации о игроке
         {
-            
-            inventory.addItemToInventory(ItemList.allItems["test2"],15);
-            inventory.addItemToInventory(ItemList.allItems["test"], 2);
+
+            inventory.addItemToInventory(ItemList.allItems["tornShirt"], 2);
+            inventory.addItemToInventory(ItemList.allItems["dirtyPants"], 2);
+            inventory.addItemToInventory(ItemList.allItems["oldSword"], 2);
+            inventory.addItemToInventory(ItemList.allItems["smallHealPotion"], 4);
+            inventory.addItemToInventory(ItemList.allItems["apple"], 25);
 
             ConsoleColor color = ConsoleColor.White;
             switch (proffesion)
@@ -244,7 +247,7 @@
             
 
             Console.WriteLine("Ваш инвентарь:");
-            for(int i = 0; i < inventory.GetMaxSlots(); i++)
+            for (int i = 0; i < inventory.GetMaxSlots(); i++)
             {
                 string cellName = "Пусто";
                 string cellDescription = "Пусто";
@@ -254,16 +257,21 @@
                   cellName = inventory.GetInventoryCell(i).thisItem.name;
                   cellDescription = inventory.GetInventoryCell(i).thisItem.description;
                   cellAmount = inventory.GetInventoryCell(i).Quantity;
-                  Console.WriteLine($"Предмет {cellName}, описание {cellDescription} и количество {cellAmount}.");
+                    Console.WriteLine($"[{cellName}],[{cellDescription}] в количестве [{cellAmount}].");
                 }
                 else
                 {
                     Console.WriteLine($"В ячейке {i + 1} ничего нет.");
                 }
-                                        
-
-                
+                                                     
             }
+                    
+            
+           
+
+
+
+            
             Console.WriteLine("\nЛюбая клавиша - продолжить.");
             
             Console.ReadKey();
