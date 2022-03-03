@@ -1,11 +1,11 @@
 ﻿namespace Adventure_rpg
 {
+
     internal class Character
     {
       
         string name = "";
         string proffesion = "";
-        
         int strength = 1;
         int agility = 1;
         int intelligence = 1;
@@ -13,7 +13,9 @@
         int charLVL = 1;
         int money = 0;
 
-        InventorySystem inventory = new InventorySystem();
+        public InventorySystem inventory = new InventorySystem();
+
+
 
         bool physicWeapon = false;
         bool magicWeapon = false;
@@ -212,11 +214,10 @@
         public void Greetings() // вывод информации о игроке
         {
 
-            inventory.addItemToInventory(ItemList.allItems["tornShirt"], 2);
-            inventory.addItemToInventory(ItemList.allItems["dirtyPants"], 2);
-            inventory.addItemToInventory(ItemList.allItems["oldSword"], 2);
-            inventory.addItemToInventory(ItemList.allItems["smallHealPotion"], 4);
-            inventory.addItemToInventory(ItemList.allItems["apple"], 25);
+            systemInterface.AddToInventory(inventory, "oldSword", 2, "Не хватает места!");
+            systemInterface.AddToInventory(inventory, "apple", 20, "Не хватает места!");
+            systemInterface.AddToInventory(inventory, "leatherGloves", 20, "Не хватает места!");
+            systemInterface.RemoveFromInventory(inventory, "apple", 21, "Нет столько предметов!");
 
             ConsoleColor color = ConsoleColor.White;
             switch (proffesion)
@@ -235,7 +236,7 @@
                     break;
 
             }
-            Console.Clear();
+            
             systemInterface.ColorWrite($"Привет, {name}.", name, ConsoleColor.Blue,5);
             systemInterface.ColorWrite($" Твой класс {proffesion}.\n", proffesion, color,5);
             Console.Write("Твои статы:\n");
@@ -246,32 +247,16 @@
             
             
 
-            Console.WriteLine("Ваш инвентарь:");
-            for (int i = 0; i < inventory.GetMaxSlots(); i++)
-            {
-                string cellName = "Пусто";
-                string cellDescription = "Пусто";
-                int cellAmount = 0;
-                if (inventory.IsCellExist(i))
-                {
-                  cellName = inventory.GetInventoryCell(i).thisItem.name;
-                  cellDescription = inventory.GetInventoryCell(i).thisItem.description;
-                  cellAmount = inventory.GetInventoryCell(i).Quantity;
-                    Console.WriteLine($"[{cellName}],[{cellDescription}] в количестве [{cellAmount}].");
-                }
-                else
-                {
-                    Console.WriteLine($"В ячейке {i + 1} ничего нет.");
-                }
-                                                     
-            }
-                    
             
-           
-
-
-
             
+            
+
+
+            string[] testOptions = {"Вариант 1","Вариант 2"};
+            systemInterface.SelectMenu(testOptions, testDelegate, testDelegate2);
+
+
+
             Console.WriteLine("\nЛюбая клавиша - продолжить.");
             
             Console.ReadKey();

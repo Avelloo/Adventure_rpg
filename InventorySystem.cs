@@ -54,9 +54,7 @@ namespace Adventure_rpg
         public void removeItemFromInventory(Item item, int amount)
         {
             int deletedAmount = amount;
-            if (isCapableOfDeleting(item,amount))
-            {
-                while (deletedAmount > 0)
+            while (deletedAmount > 0)
                 {                    
                     if (Inventory.Exists(x => x.thisItem.name == item.name && x.Quantity > 0))
                     {
@@ -81,11 +79,8 @@ namespace Adventure_rpg
                     }
                     amount = deletedAmount;
                 }
-            }
-            else
-            {
-                throw new Exception("Попытка удалить без проверки на возможность!");
-            }
+            
+            
             
             
         }
