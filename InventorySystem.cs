@@ -97,7 +97,17 @@ namespace Adventure_rpg
                 throw new Exception("Нет данных в этой ячейке инвентаря!");
             }
         }
-
+        public object GetItemType(int id)
+        {
+            if (Inventory.ElementAtOrDefault(id) != null)
+            {
+                return Inventory.ElementAt(id);
+            }
+            else
+            {
+                throw new Exception("Нет данных в этой ячейке инвентаря!");
+            }
+        }
         public void StackInventory()
         {
 
@@ -170,6 +180,8 @@ namespace Adventure_rpg
         {
             return maxInventorySlots;
         }
+
+        
     }
 
     public class InventoryCell //класс ячейки
@@ -192,4 +204,5 @@ namespace Adventure_rpg
             Quantity -= amountToRemove;
         }
     } 
+
 }

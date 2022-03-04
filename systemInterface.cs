@@ -62,21 +62,28 @@ namespace Adventure_rpg
             }
         }
 
-        static void DrawMenu(string[] options, int index, bool erase)
+        static void DrawInventoryMenu(string[] options,string[] slotAmount, int index, bool erase)
         {
              if(erase) ClearLines(options.Length);
             string prefix = " ";
             for(int i = 0; i < options.Length; i++)
             {
-                if (options[i] == options[index])
+                if (i == index)
                 {
-                    prefix = ">";
-                    Console.WriteLine(prefix + options[i]);
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    prefix = "->";
+                    Console.WriteLine($"{prefix} {options[i],-17} {slotAmount[i],-4}");
+                    Console.ResetColor();
                 }
+               
                 else
                 {
-                    prefix = " ";
-                    Console.WriteLine(prefix + options[i]);
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    prefix = "  ";
+                    Console.WriteLine($"{prefix} {options[i],-17} {slotAmount[i],-4}");
+                    Console.ResetColor();
                 }
             }
         }
@@ -87,40 +94,39 @@ namespace Adventure_rpg
         /// <param name="options"> варианты навигации (ДОЛЖНЫ БЫТЬ РАВНЫ КОЛИЧЕСТВУ МЕТОДОВ)</param>
         /// <param name="method1">Метод 1</param>
         /// <param name="method2">Метод 2</param>
-        public static void SelectMenu(string[] options, Delegate method1, Delegate method2)
-        {
-            int currentIndex = 0;
-            bool pressed = false;
+        //public static void SelectMenu(string[] options, Delegate method1, Delegate method2)
+        //{
+        //    int currentIndex = 0;
+        //    bool pressed = false;
 
-            method1();
-            DrawMenu(options, currentIndex, false);
-            while(pressed == false)
-            {
-                ConsoleKeyInfo keyPressed = Console.ReadKey();
+        //   DrawMenu(options, currentIndex, false);
+        //    while(pressed == false)
+        //    {
+        //        ConsoleKeyInfo keyPressed = Console.ReadKey();
 
-                switch (keyPressed.Key)
-                {
-                    case ConsoleKey.UpArrow:
-                        currentIndex--;
-                        break;
-                    case ConsoleKey.DownArrow:
-                        currentIndex++;
-                        break;
-                    default:
-                        break;
-                }
-                if(currentIndex > options.Length - 1)
-                {
-                    currentIndex = 0;
-                }
-                else if(currentIndex < 0)
-                {
-                    currentIndex = options.Length - 1;
-                }
+        //        switch (keyPressed.Key)
+        //        {
+        //            case ConsoleKey.UpArrow:
+        //                currentIndex--;
+        //                break;
+        //            case ConsoleKey.DownArrow:
+        //                currentIndex++;
+        //                break;
+        //            default:
+        //                break;
+        //        }
+        //        if(currentIndex > options.Length - 1)
+        //        {
+        //            currentIndex = 0;
+        //        }
+        //        else if(currentIndex < 0)
+        //        {
+        //            currentIndex = options.Length - 1;
+        //        }
 
-               DrawMenu(options, currentIndex, true);
-            }
-        }
+        //       DrawMenu(options, currentIndex, true);
+        //    }
+        //}
 
  
         public static void AddToInventory(InventorySystem inventory,string itemname, int amount, string errorMsg)//Функция добавки в инветарь(с проверкой)
@@ -153,7 +159,7 @@ namespace Adventure_rpg
             }
         }
 
-        public static void DrawInventory(InventorySystem inventory)
+        public static void DrawInventory(InventorySystem inventory)//отрисовка инвентаря
         {
             Console.WriteLine("Ваш инвентарь:");
             for (int i = 0; i < inventory.GetMaxSlots(); i++)
@@ -174,9 +180,82 @@ namespace Adventure_rpg
                 }
 
             }
+        } 
+
+        public static void InventorySelectMenu(InventorySystem inventory, bool canSell)//инвентарь с меню и кнопкой назад
+        {
+            Console.WriteLine();
+            string[] options = new string[inventory.GetMaxSlots()+2];
+            string[] slotAmount = new string[inventory.GetMaxSlots()+2];
+            int currentIndex = 0;
+            bool selected = false;
+            for(int i = 0; i < inventory.GetMaxSlots(); i++)
+            {
+                if (inventory.IsCellExist(i))
+                {
+                    options[i] = inventory.GetInventoryCell(i).thisItem.name;
+                    slotAmount[i] = " x" + inventory.GetInventoryCell(i).Quantity.ToString();
+                }
+                else
+                {
+                    options[i] = "Пустая ячейка";
+                    slotAmount[i] = "  ";
+                }
+            }
+            
+            options[inventory.GetMaxSlots() + 1] = "Назад";
+
+            DrawInventoryMenu(options,slotAmount, currentIndex, false);
+            while (selected == false)
+            {
+                ConsoleKeyInfo keyPressed = Console.ReadKey();
+
+                switch (keyPressed.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        currentIndex--;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        currentIndex++;
+                        break;
+                    case ConsoleKey.Enter:
+                        if(currentIndex<inventory.GetMaxSlots() && inventory.IsCellExist(currentIndex))
+                        {
+                            selected = true;
+                            DisplaySelectedItemInfo(inventory, currentIndex, canSell);
+                            continue;
+                        }
+                        else if (currentIndex == inventory.GetMaxSlots() + 1)
+                        {
+                            selected = true;
+                            throw new Exception("Должен быть вызов функции назад");
+                            continue;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                        break;                       
+                    default:
+                        break;
+                }
+                if (currentIndex > options.Length - 1)
+                {
+                    currentIndex = 0;
+                }
+                else if (currentIndex < 0)
+                {
+                    currentIndex = options.Length - 1;
+                }
+
+                DrawInventoryMenu(options,slotAmount, currentIndex, true);
+                                
+
+            }
+            
         }
 
-        public static void ClearLines(int lines)
+        public static void ClearLines(int lines)//стереть несколько линий(не весь экран)
         {
             for(int i = 1; i <= lines; i++)
             {
@@ -184,6 +263,38 @@ namespace Adventure_rpg
                 Console.Write(new string(' ', Console.WindowWidth));
                 Console.SetCursorPosition(0, Console.CursorTop - 1);
             }
+        }
+        
+        
+        static void DisplaySelectedItemInfo(InventorySystem inventory, int index, bool canSell)
+        {
+            Console.Clear();
+            Console.WriteLine($"Ячейка [{index+1}]");
+            Console.WriteLine("Предмет: " + inventory.GetInventoryCell(index).thisItem.name + ", " + inventory.GetInventoryCell(index).thisItem.type);
+            if (inventory.GetInventoryCell(index).thisItem.maxSTACK > 1)
+            {
+                Console.WriteLine("Кол-во {0}/{1}.", inventory.GetInventoryCell(index).Quantity, inventory.GetInventoryCell(index).thisItem.maxSTACK);
+            }
+            switch (inventory.GetInventoryCell(index).thisItem.type)
+            {
+                case "Целебное зелье":
+                case "Еда":
+                    Console.WriteLine($"Восстанавливает [{HealConsumables.GetFoodHealInfo((HealConsumables)inventory.GetInventoryCell(index).thisItem)}] хп.");
+                    break;
+                case "Нагрудник":
+                case "Перчатки":
+                case "Шлем":
+                case "Штаны":
+                    Console.WriteLine($"Дает [{Armor.GetArmorDefence((Armor)inventory.GetInventoryCell(index).thisItem)}] брони.");
+                    break;
+                case "Оружие":
+                    Console.WriteLine($"Наносит [{Weapon.GetWeaponDamage((Weapon)inventory.GetInventoryCell(index).thisItem)}] урона.");
+                    break;
+
+
+            }
+            Console.WriteLine("\n" + inventory.GetInventoryCell(index).thisItem.description);
+                
         }
 
     }

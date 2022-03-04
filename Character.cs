@@ -216,7 +216,7 @@
 
             systemInterface.AddToInventory(inventory, "oldSword", 2, "Не хватает места!");
             systemInterface.AddToInventory(inventory, "apple", 20, "Не хватает места!");
-            systemInterface.AddToInventory(inventory, "leatherGloves", 20, "Не хватает места!");
+            systemInterface.AddToInventory(inventory, "leatherGloves", 2, "Не хватает места!");
             systemInterface.RemoveFromInventory(inventory, "apple", 21, "Нет столько предметов!");
 
             ConsoleColor color = ConsoleColor.White;
@@ -237,23 +237,22 @@
 
             }
             
-            systemInterface.ColorWrite($"Привет, {name}.", name, ConsoleColor.Blue,5);
-            systemInterface.ColorWrite($" Твой класс {proffesion}.\n", proffesion, color,5);
+            systemInterface.ColorWrite($"Привет, {name}.", name, ConsoleColor.Blue);
+            systemInterface.ColorWrite($" Твой класс {proffesion}.\n", proffesion, color);
             Console.Write("Твои статы:\n");
-            systemInterface.ColorWrite($"Сила: {strength}\n", "Сила", ConsoleColor.DarkRed,5);
-            systemInterface.ColorWrite($"Ловкость: {agility}\n", "Ловкость", ConsoleColor.DarkGreen,5);
-            systemInterface.ColorWrite($"Интеллект: {intelligence}\n", "Интеллект", ConsoleColor.DarkBlue,5);
-
-            
-            
-
-            
-            
-            
+            systemInterface.ColorWrite($"Сила: {strength}\n", "Сила", ConsoleColor.DarkRed);
+            systemInterface.ColorWrite($"Ловкость: {agility}\n", "Ловкость", ConsoleColor.DarkGreen);
+            systemInterface.ColorWrite($"Интеллект: {intelligence}\n", "Интеллект", ConsoleColor.DarkBlue);
 
 
-            string[] testOptions = {"Вариант 1","Вариант 2"};
-            systemInterface.SelectMenu(testOptions, testDelegate, testDelegate2);
+
+
+
+
+
+
+
+            systemInterface.InventorySelectMenu(inventory, false);
 
 
 

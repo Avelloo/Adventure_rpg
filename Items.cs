@@ -22,6 +22,7 @@ namespace Adventure_rpg
             this.description = description;
         }
 
+
     }
     public class Equipable : Item
     {
@@ -44,7 +45,10 @@ namespace Adventure_rpg
             this.canUse = canUse;
         }
         
-        
+        public static int GetWeaponDamage(Weapon weapon)
+        {
+            return weapon.damage;
+        }
 
     }
 
@@ -52,10 +56,14 @@ namespace Adventure_rpg
     {
         public int defencePoints;
         public string armorPart;
-        public Armor(string name, string description, int defencePoints, string armorPart) : base(name, description)
+        public Armor(string name, string description, int defencePoints, string type) : base(name, description)
         {
             this.defencePoints = defencePoints;
-            this.armorPart = armorPart;
+            this.type = type;
+        }
+        public static int GetArmorDefence(Armor armor)
+        {
+            return armor.defencePoints;
         }
     }
 
@@ -77,14 +85,19 @@ namespace Adventure_rpg
         {
             this.maxSTACK = maxStack;
             this.healValue = healValue;
+            this.type = type.ToString();
         }
         public int Action()
         {
             return healValue;
         }
+        public static int GetFoodHealInfo(HealConsumables healItem)
+        {
+            return healItem.healValue;
+        }
     }
 
-
+    
 
 
 
