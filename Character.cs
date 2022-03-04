@@ -3,7 +3,7 @@
 
     internal class Character
     {
-      
+
         string name = "";
         string proffesion = "";
         int strength = 1;
@@ -32,8 +32,16 @@
 
         public void CreateCharacter() //создание персонажа
         {
-            beginning:
+        beginning:
             Console.Clear();
+            Console.WriteLine(@"               _   _                _____                      
+     /\       | | (_)              / ____|                     
+    /  \   ___| |_ _  ___  _ __   | |  __  __ _ _ __ ___   ___ 
+   / /\ \ / __| __| |/ _ \| '_ \  | | |_ |/ _` | '_ ` _ \ / _ \
+  / ____ | (__| |_| | (_) | | | | | |__| | (_| | | | | | |  __/
+ /_/    \_\___|\__|_|\___/|_| |_|  \_____|\__,_|_| |_| |_|\___|
+                                                               
+                                                               ");
             Console.WriteLine("Для начала нужно ввести имя. Сам(0) или рандомно(1)?");
             switch (Console.ReadLine())
             {
@@ -47,11 +55,11 @@
                 default:
                     goto beginning;
             }
-           
 
-            
 
-            if (name == null || name == "" || name.Trim().Length<=1) CreateCharacter();
+
+
+            if (name == null || name == "" || name.Trim().Length <= 1) CreateCharacter();
 
             selection:
             Console.Clear();
@@ -90,7 +98,7 @@
                     break;
                 default:
                     goto selection;
-                 
+
 
 
             }
@@ -104,10 +112,10 @@
             Console.Clear();
             while (points > 0)
             {
-                selectPoints:
+            selectPoints:
                 Console.Clear();
                 Console.WriteLine("Что будем качать?\nОчков осталось: {0}.\n", points);
-                
+
                 DisplayCharacterPoints();
 
                 Console.WriteLine("\n1 - Качать силу, 2 - Качать ловкость, 3 - Качать интеллект");
@@ -125,10 +133,10 @@
                         intelligence += 1;
                         points -= 1;
                         break;
-                    default :
+                    default:
                         goto selectPoints;
                 }
-                if(strength > 10)
+                if (strength > 10)
                 {
                     strength = 10;
                     points += 1;
@@ -158,7 +166,7 @@
 
 
             }
-            
+
             Console.Clear();
             Console.WriteLine();
             DisplayCharacterPoints();
@@ -169,11 +177,11 @@
 
         void DisplayCharacterPoints()
         {
-            
+
             Console.Write("{0,-11}", "Сила:");
             for (int i = 1; i <= 10; i++)
-            {   
-                if(strength >= i)
+            {
+                if (strength >= i)
                 {
                     Console.Write("(+)");
                 }
@@ -208,7 +216,7 @@
             }
         }
 
-        
+
 
 
         public void Greetings() // вывод информации о игроке
@@ -236,7 +244,7 @@
                     break;
 
             }
-            
+
             systemInterface.ColorWrite($"Привет, {name}.", name, ConsoleColor.Blue);
             systemInterface.ColorWrite($" Твой класс {proffesion}.\n", proffesion, color);
             Console.Write("Твои статы:\n");
@@ -252,12 +260,12 @@
 
 
 
-            systemInterface.InventorySelectMenu(inventory, false);
+            systemInterface.InventorySelectMenu(inventory, true);
 
 
 
             Console.WriteLine("\nЛюбая клавиша - продолжить.");
-            
+
             Console.ReadKey();
         }
 
@@ -293,7 +301,7 @@
         }
 
 
-        
+
 
     }
 }

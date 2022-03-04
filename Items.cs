@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Adventure_rpg
+﻿namespace Adventure_rpg
 {
-    
-    
-    
-   public class Item //базовый класс предмета(любого)
+
+
+
+    public class Item //базовый класс предмета(любого)
     {
         public string name = "Default name";
         public string description = "Default description";
@@ -36,18 +30,22 @@ namespace Adventure_rpg
         public int damage = 0;
         public string canUse;
 
-        public Weapon(string name, string description, string type, int damage, string canUse)  : base(name,description)
+        public Weapon(string name, string description, string type, int damage, string canUse) : base(name, description)
         {
-            
+
             this.damage = damage;
             this.type = type;
             this.maxSTACK = 1;
             this.canUse = canUse;
         }
-        
+
         public static int GetWeaponDamage(Weapon weapon)
         {
             return weapon.damage;
+        }
+        public static string GetWeaponClass(Weapon weapon)
+        {
+            return weapon.canUse;
         }
 
     }
@@ -74,13 +72,13 @@ namespace Adventure_rpg
         {
             this.maxSTACK = maxStack;
         }
-        
+
 
     }
 
     class HealConsumables : Consumables
     {
-        public int healValue;  
+        public int healValue;
         public HealConsumables(string name, string description, string type, int maxStack, int healValue) : base(name, description, type, maxStack)
         {
             this.maxSTACK = maxStack;
@@ -97,7 +95,7 @@ namespace Adventure_rpg
         }
     }
 
-    
+
 
 
 

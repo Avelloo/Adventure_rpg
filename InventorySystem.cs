@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Adventure_rpg
+﻿namespace Adventure_rpg
 {
     public class InventorySystem
     {
-        
+
         public int maxInventorySlots = 10;
         public readonly List<InventoryCell> Inventory = new List<InventoryCell>();
 
         public void addItemToInventory(Item item, int amount)
         {
-            while(amount > 0)
+            while (amount > 0)
             {
                 //если уже есть предмет с данным ID и у него еще есть место до полного стака
                 if (Inventory.Exists(x => (x.thisItem.name == item.name) && (x.Quantity < item.maxSTACK)))
@@ -35,7 +29,7 @@ namespace Adventure_rpg
                 else
                 {
                     //Проверяем есть ли свободные слоты
-                    if(Inventory.Count < maxInventorySlots)
+                    if (Inventory.Count < maxInventorySlots)
                     {
                         //Создаем ячейку с нужным предметом, но без количества. Так как количество, которое
                         //мы хотим добавить всё ещё больше 0, то запустится цикл if (с 19 строчки)
@@ -48,47 +42,47 @@ namespace Adventure_rpg
                     }
                 }
             }
-            
+
         }
 
         public void removeItemFromInventory(Item item, int amount)
         {
             int deletedAmount = amount;
             while (deletedAmount > 0)
-                {                    
-                    if (Inventory.Exists(x => x.thisItem.name == item.name && x.Quantity > 0))
+            {
+                if (Inventory.Exists(x => x.thisItem.name == item.name && x.Quantity > 0))
+                {
+                    InventoryCell currentCell = Inventory.Last(x => (x.thisItem.name == item.name && x.Quantity > 0));
+                    if (amount > currentCell.Quantity)
                     {
-                        InventoryCell currentCell = Inventory.Last(x => (x.thisItem.name == item.name && x.Quantity > 0));
-                        if (amount > currentCell.Quantity)
-                        {
-                            deletedAmount -= currentCell.Quantity;
-                            currentCell.Quantity = 0;
-                        }                        
-                        else if(amount < currentCell.thisItem.maxSTACK)
-                        {
-                            deletedAmount -= currentCell.Quantity;
-                            currentCell.Quantity -= amount;                         
+                        deletedAmount -= currentCell.Quantity;
+                        currentCell.Quantity = 0;
+                    }
+                    else if (amount < currentCell.thisItem.maxSTACK)
+                    {
+                        deletedAmount -= currentCell.Quantity;
+                        currentCell.Quantity -= amount;
 
-                        }
-                        
                     }
-                    if(Inventory.Exists(x => x.thisItem.name == item.name && x.Quantity == 0))
-                    {
-                        InventoryCell currentCell = Inventory.First(x => (x.thisItem.name == item.name && x.Quantity == 0));
-                        Inventory.Remove(currentCell);
-                    }
-                    amount = deletedAmount;
+
                 }
-            
-            
-            
-            
+                if (Inventory.Exists(x => x.thisItem.name == item.name && x.Quantity == 0))
+                {
+                    InventoryCell currentCell = Inventory.First(x => (x.thisItem.name == item.name && x.Quantity == 0));
+                    Inventory.Remove(currentCell);
+                }
+                amount = deletedAmount;
+            }
+
+
+
+
         }
 
 
         public InventoryCell GetInventoryCell(int id)
         {
-            if(Inventory.ElementAtOrDefault(id) != null)
+            if (Inventory.ElementAtOrDefault(id) != null)
             {
                 return Inventory.ElementAt(id);
             }
@@ -144,27 +138,27 @@ namespace Adventure_rpg
         public bool isCapableOfDeleting(Item item, int amount)//Проверка, можно ли удалить нужное колво предметов
         {
             return amount <= CountItem(item) ? true : false;
-        } 
+        }
         public bool isCapableOfAdding(Item item, int amount)//Проверка, вместится ли нужное количество предметов данного типа 
         {
-           
+
             int maxHold = 0;
             for (int i = 0; i < GetMaxSlots(); i++)
             {
-                
+
                 if (IsCellExist(i))
                 {
                     InventoryCell thisCell = GetInventoryCell(i);
                     if (thisCell.thisItem.name == item.name && thisCell.Quantity < item.maxSTACK)
                     {
                         maxHold += item.maxSTACK - thisCell.Quantity;
-                    }                  
-                  
-                    
+                    }
+
+
                 }
                 else
                 {
-                    maxHold += item.maxSTACK;  
+                    maxHold += item.maxSTACK;
                 }
 
 
@@ -175,13 +169,13 @@ namespace Adventure_rpg
             //Console.WriteLine("ГОТОВ ХРАНИТЬ:" + maxHold);
 
             return maxHold >= amount ? true : false;
-        } 
+        }
         public int GetMaxSlots()
         {
             return maxInventorySlots;
         }
 
-        
+
     }
 
     public class InventoryCell //класс ячейки
@@ -194,7 +188,7 @@ namespace Adventure_rpg
             this.thisItem = thisItem;
             this.Quantity = quantity;
         }
-       
+
         public void AddToCell(int amountToAdd)
         {
             Quantity += amountToAdd;
@@ -203,6 +197,6 @@ namespace Adventure_rpg
         {
             Quantity -= amountToRemove;
         }
-    } 
+    }
 
 }
