@@ -4,11 +4,14 @@
     {
         static void Main(string[] args)
         {
-           
 
-            Character character = new();
-            character.CreateCharacter();
-            character.Greetings();
+            while (true)
+            {
+                Game game = new Game();
+                game.Gameplay();
+            }
+            
+            
 
         }
 

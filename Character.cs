@@ -1,9 +1,9 @@
 ﻿namespace Adventure_rpg
 {
-
+    
     internal class Character
     {
-
+        public InventorySystem inventory = new InventorySystem();
         string name = "";
         string proffesion = "";
         int strength = 1;
@@ -12,10 +12,14 @@
         int currentExp = 0;
         int charLVL = 1;
         int money = 0;
+        int maxHealth = 100;
+        
+        int currentHealth = 0;
+        int playerDMG = 0;
+        int playerDefencePercentage = 0;
 
-        public InventorySystem inventory = new InventorySystem();
 
-
+        Action backInformation;
 
         bool physicWeapon = false;
         bool magicWeapon = false;
@@ -23,15 +27,16 @@
 
         int startPoints = 1;
 
-
-
-
-
-
-
+        public int CurrentHealth { get => currentHealth; set => currentHealth = value; }
+        public int MaxHealth { get => maxHealth; set => maxHealth = value; }
+        public int CurrentExp { get => currentExp; set => currentExp = value; }
+        public int PlayerDMG { get => playerDMG; set => playerDMG = value; }
+        public int PlayerDefencePercentage { get => playerDefencePercentage; set => playerDefencePercentage = value; }
+        public string Proffesion { get => proffesion; set => proffesion = value; }
 
         public void CreateCharacter() //создание персонажа
         {
+
         beginning:
             Console.Clear();
             Console.WriteLine(@"               _   _                _____                      
@@ -42,14 +47,14 @@
  /_/    \_\___|\__|_|\___/|_| |_|  \_____|\__,_|_| |_| |_|\___|
                                                                
                                                                ");
-            Console.WriteLine("Для начала нужно ввести имя. Сам(0) или рандомно(1)?");
-            switch (Console.ReadLine())
+            Console.WriteLine("Для начала нужно ввести имя. Сам или рандомно?"); 
+            switch (systemInterface.DrawMenuAndReturnAction(new string[] { "Сам", "Случайное имя" }))
             {
-                case "0":
+                case "Сам":
                     Console.WriteLine("\nВведите имя: ");
                     name = Console.ReadLine();
                     break;
-                case "1":
+                case "Случайное имя":
                     name = GeneratingName();
                     break;
                 default:
@@ -68,28 +73,26 @@
             systemInterface.ColorWrite("\n Маг      - герой дальнего боя,\n\t +1 к инт. со старта игры, может использовать магическое оружие.\n", "Маг", ConsoleColor.Blue);
             systemInterface.ColorWrite("\n Лучник   - герой дальнего боя,\n\t +1 к ловкости со старта игры, может использовать лук.\n", "Лучник", ConsoleColor.Green);
             systemInterface.ColorWrite("\n Странник - герой универсал,\n\t -1 к навыкам для распределения, может использовать все типы оружия.", "Странник", ConsoleColor.DarkMagenta);
-            Console.WriteLine("\n\n 1 - воин, 2 - маг\n 3 - лучник, 4 - странник");
-            Console.WriteLine("\nТвой выбор: ");
-            string choise = Console.ReadLine();
-
-            switch (choise)
+            Console.WriteLine("\n\nТвой выбор: \n");
+           
+            switch (systemInterface.DrawMenuAndReturnAction(new string[] { "Воин", "Маг","Лучник","Странник" }))
             {
-                case "1":
+                case "Воин":
                     proffesion = "Воин";
                     strength += 1;
                     physicWeapon = true;
                     break;
-                case "2":
+                case "Маг":
                     proffesion = "Маг";
                     intelligence += 1;
                     magicWeapon = true;
                     break;
-                case "3":
+                case "Лучник":
                     proffesion = "Лучник";
                     agility += 1;
                     bowWeapon = true;
                     break;
-                case "4":
+                case "Странник":
                     proffesion = "Странник";
                     startPoints -= 1;
                     physicWeapon = true;
@@ -104,6 +107,8 @@
             }
 
             SpreadingPoints(startPoints);
+            CurrentHealth = maxHealth;
+            
 
 
         }
@@ -117,19 +122,18 @@
                 Console.WriteLine("Что будем качать?\nОчков осталось: {0}.\n", points);
 
                 DisplayCharacterPoints();
-
-                Console.WriteLine("\n1 - Качать силу, 2 - Качать ловкость, 3 - Качать интеллект");
-                switch (Console.ReadLine())
+                Console.WriteLine("\n");
+                switch (systemInterface.DrawMenuAndReturnAction(new string[] { "Сила", "Ловкость", "Интеллект"}))
                 {
-                    case "1":
+                    case "Сила":
                         strength += 1;
                         points -= 1;
                         break;
-                    case "2":
+                    case "Ловкость":
                         agility += 1;
                         points -= 1;
                         break;
-                    case "3":
+                    case "Интеллект":
                         intelligence += 1;
                         points -= 1;
                         break;
@@ -219,13 +223,10 @@
 
 
 
-        public void Greetings() // вывод информации о игроке
+        public void Greetings(Game game) // вывод информации о игроке
         {
+            Console.Clear();
 
-            systemInterface.AddToInventory(inventory, "oldSword", 2, "Не хватает места!");
-            systemInterface.AddToInventory(inventory, "apple", 20, "Не хватает места!");
-            systemInterface.AddToInventory(inventory, "leatherGloves", 2, "Не хватает места!");
-            systemInterface.RemoveFromInventory(inventory, "apple", 21, "Нет столько предметов!");
 
             ConsoleColor color = ConsoleColor.White;
             switch (proffesion)
@@ -245,25 +246,37 @@
 
             }
 
-            systemInterface.ColorWrite($"Привет, {name}.", name, ConsoleColor.Blue);
-            systemInterface.ColorWrite($" Твой класс {proffesion}.\n", proffesion, color);
+            systemInterface.ColorWrite($"Привет, {name}.\n", name, ConsoleColor.Blue);
+            systemInterface.ColorWrite($"У тебя сейчас {currentHealth}/{maxHealth} хп.\n", maxHealth.ToString(), ConsoleColor.Red);
+            systemInterface.ColorWrite($"Твой класс {proffesion}.\n", proffesion, color);
             Console.Write("Твои статы:\n");
-            systemInterface.ColorWrite($"Сила: {strength}\n", "Сила", ConsoleColor.DarkRed);
-            systemInterface.ColorWrite($"Ловкость: {agility}\n", "Ловкость", ConsoleColor.DarkGreen);
-            systemInterface.ColorWrite($"Интеллект: {intelligence}\n", "Интеллект", ConsoleColor.DarkBlue);
+            systemInterface.ColorWrite($"Сила: {strength}/10\n", "Сила", ConsoleColor.DarkRed);
+            systemInterface.ColorWrite($"Ловкость: {agility}/10\n", "Ловкость", ConsoleColor.DarkGreen);
+            systemInterface.ColorWrite($"Интеллект: {intelligence}/10\n", "Интеллект", ConsoleColor.DarkBlue);
+            if (money > 0)
+            {
+                systemInterface.ColorWrite($"Твой кошель наполнен на [{money}] золота.\n", "золота", ConsoleColor.Yellow);
+            }
+            else
+            {
+                systemInterface.ColorWrite($"У тебя нет золота. Совсем.\n", "золота", ConsoleColor.Yellow);
+            }
+            
 
-
-
-
-
-
-
-
-
-            systemInterface.InventorySelectMenu(inventory, true);
-
-
-
+            Console.WriteLine("\n");
+            switch (systemInterface.DrawMenuAndReturnAction(new string[] { "Посмотреть инвентарь", "Назад" })) 
+            {
+                case "Посмотреть инвентарь":
+                    Console.Clear();
+                    systemInterface.InventorySelectMenu(inventory, false, "Информация", game);
+                    break;
+                case "Назад":
+                    Console.Clear();
+                    game.ChooseAction();
+                    break;
+            }
+            
+            
             Console.WriteLine("\nЛюбая клавиша - продолжить.");
 
             Console.ReadKey();
@@ -301,8 +314,8 @@
         }
 
 
-
-
     }
+
+
 }
 

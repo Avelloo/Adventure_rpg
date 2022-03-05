@@ -176,7 +176,7 @@
             }
         }
 
-        public static void InventorySelectMenu(InventorySystem inventory, bool canSell)//инвентарь с меню и кнопкой назад
+        public static void InventorySelectMenu(InventorySystem inventory, bool canSell, string backAction, Game currentGame)//инвентарь с меню и кнопкой назад
         {
             Console.WriteLine(@"");
             string[] options = new string[inventory.GetMaxSlots() + 2];
@@ -216,13 +216,21 @@
                         if (currentIndex < inventory.GetMaxSlots() && inventory.IsCellExist(currentIndex))
                         {
                             selected = true;
-                            DisplaySelectedItemInfo(inventory, currentIndex, canSell);
+                            DisplaySelectedItemInfo(inventory, currentIndex, canSell, backAction, currentGame);
                             continue;
                         }
                         else if (currentIndex == inventory.GetMaxSlots() + 1)
                         {
                             selected = true;
-                            throw new Exception("Должен быть вызов функции назад");
+                            switch (backAction)
+                            {
+                                case "Торговец":
+                                    throw new Exception("Торговец ещё не сделан");
+                                    break;
+                                case "Информация":
+                                    currentGame.Character.Greetings(currentGame);
+                                    break;
+                            }
                             continue;
                         }
                         else
@@ -248,6 +256,7 @@
             }
 
         }
+
 
         public static void ClearLines(int lines)//стереть несколько линий(не весь экран)
         {
@@ -285,7 +294,7 @@
                 }
             }
         }
-        static void DisplaySelectedItemInfo(InventorySystem inventory, int index, bool canSell)
+        static void DisplaySelectedItemInfo(InventorySystem inventory, int index, bool canSell, string backAction, Game currentGame)
         {
             string[] foodOptions = { "Использовать", "Выбросить" };
             string[] armorAmdWeaponOptions = { "Экипировать", "Сравнить", "Выбросить" };
@@ -317,12 +326,13 @@
                 case "Целебное зелье":
                 case "Еда":
                     Console.WriteLine($" Восстанавливает [{HealConsumables.GetFoodHealInfo((HealConsumables)inventory.GetInventoryCell(index).thisItem)}] хп.");
+                    Console.WriteLine($" У вас сейчас чч хп.");
                     Console.WriteLine("\n" + " Действия:");
                     switch (DrawMenuAndReturnAction(foodOptions))
                     {
                         case "Назад":
                             Console.Clear();
-                            InventorySelectMenu(inventory, canSell);
+                            InventorySelectMenu(inventory, canSell, backAction, currentGame);
                             break;
                     }
                     break;
@@ -336,10 +346,10 @@
                     {
                         case "Назад":
                             Console.Clear();
-                            InventorySelectMenu(inventory, canSell);
+                            InventorySelectMenu(inventory, canSell, backAction, currentGame);
                             break;
                     }
-                    
+
                     break;
                 case "Оружие":
                     Console.WriteLine($" Для класса [{Weapon.GetWeaponClass((Weapon)inventory.GetInventoryCell(index).thisItem)}].");
@@ -349,7 +359,7 @@
                     {
                         case "Назад":
                             Console.Clear();
-                            InventorySelectMenu(inventory, canSell);
+                            InventorySelectMenu(inventory, canSell, backAction, currentGame);
                             break;
                     }
                     break;

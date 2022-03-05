@@ -14,6 +14,8 @@ namespace Adventure_rpg
 
         // Оружие                            Название      Описание                                            Тип предмета  ДМГ  Класс
         static Weapon oldSword = new Weapon("Старый меч", "Не лучшее оружие, но всё ещё может оказаться полезным.", "Оружие", 3, "Воин");
+        static Weapon oldStaff = new Weapon("Старый посох", "Не лучшее оружие, но всё ещё может оказаться полезным.", "Оружие", 3, "Маг");
+        static Weapon oldBow = new Weapon("Старый лук", "Не лучшее оружие, но всё ещё может оказаться полезным.", "Оружие", 3, "Лучник");
         static Weapon steelSword = new Weapon("Стальной меч", "Добротно сделанный меч.", "Оружие", 6,"Воин");
         static Weapon silverSword = new Weapon("Серебряный меч", "На рукояти нарисовано множество замысловатых рисунков...", "Оружие", 12, "Воин");
 
@@ -45,6 +47,8 @@ namespace Adventure_rpg
         {
 
             {"oldSword",oldSword},
+            {"oldStaff",oldStaff},
+            {"oldBow",oldBow},
             {"steelSword", steelSword},
             {"silverSword",silverSword },
             {"tornShirt", tornShirt},
@@ -61,6 +65,7 @@ namespace Adventure_rpg
             {"smallHealPotion", smallHealPotion },
             {"mediumHealPotion", mediumHealPotion },
             {"largeHealPotion", largeHealPotion }
+            
         };
 
 
