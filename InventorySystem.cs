@@ -6,6 +6,11 @@
         public int maxInventorySlots = 10;
         public readonly List<InventoryCell> Inventory = new List<InventoryCell>();
 
+        public InventorySystem(int maxInventorySlots)
+        {
+            this.maxInventorySlots = maxInventorySlots;
+        }
+
         public void addItemToInventory(Item item, int amount)
         {
             while (amount > 0)

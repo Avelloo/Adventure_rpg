@@ -3,7 +3,8 @@
     
     internal class Character
     {
-        public InventorySystem inventory = new InventorySystem();
+        public InventorySystem inventory = new InventorySystem(10);
+        public InventorySystem armorAndWeapon = new InventorySystem(5);
         string name = "";
         string proffesion = "";
         int strength = 1;
@@ -18,8 +19,6 @@
         int playerDMG = 0;
         int playerDefencePercentage = 0;
 
-
-        Action backInformation;
 
         bool physicWeapon = false;
         bool magicWeapon = false;
@@ -47,14 +46,15 @@
  /_/    \_\___|\__|_|\___/|_| |_|  \_____|\__,_|_| |_| |_|\___|
                                                                
                                                                ");
-            Console.WriteLine("Для начала нужно ввести имя. Сам или рандомно?"); 
-            switch (systemInterface.DrawMenuAndReturnAction(new string[] { "Сам", "Случайное имя" }))
-            {
-                case "Сам":
+            Console.WriteLine("Привет! Начинаем создание персонажа."); 
+            switch (systemInterface.DrawMenuAndReturnAction(new string[] { "Ввести имя", "Сгенерировать имя" }))
+            { 
+            
+                case "Ввести имя":
                     Console.WriteLine("\nВведите имя: ");
                     name = Console.ReadLine();
                     break;
-                case "Случайное имя":
+                case "Сгенерировать имя":
                     name = GeneratingName();
                     break;
                 default:
@@ -69,7 +69,7 @@
             selection:
             Console.Clear();
             Console.WriteLine("Выберите класс:");
-            systemInterface.ColorWrite(" Воин     - герой ближнего боя,\n\t +1 к силе со старта игры, может использовать мечи и щиты.\n", "Воин", ConsoleColor.Red);
+            systemInterface.ColorWrite(" Воин     - герой ближнего боя,\n\t +1 к силе со старта игры, может использовать мечи.\n", "Воин", ConsoleColor.Red);
             systemInterface.ColorWrite("\n Маг      - герой дальнего боя,\n\t +1 к инт. со старта игры, может использовать магическое оружие.\n", "Маг", ConsoleColor.Blue);
             systemInterface.ColorWrite("\n Лучник   - герой дальнего боя,\n\t +1 к ловкости со старта игры, может использовать лук.\n", "Лучник", ConsoleColor.Green);
             systemInterface.ColorWrite("\n Странник - герой универсал,\n\t -1 к навыкам для распределения, может использовать все типы оружия.", "Странник", ConsoleColor.DarkMagenta);

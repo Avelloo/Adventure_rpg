@@ -188,7 +188,15 @@
                 if (inventory.IsCellExist(i))
                 {
                     options[i] = inventory.GetInventoryCell(i).thisItem.name;
-                    slotAmount[i] = " x" + inventory.GetInventoryCell(i).Quantity.ToString();
+                    if(inventory.GetInventoryCell(i).thisItem.maxSTACK > 1)
+                    {
+                        slotAmount[i] = " x" + inventory.GetInventoryCell(i).Quantity.ToString();
+                    }
+                    else
+                    {
+                        slotAmount[i] = "   ";
+                    }
+                    
                 }
                 else
                 {
