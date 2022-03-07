@@ -1,10 +1,10 @@
 ﻿namespace Adventure_rpg
 {
     
-    internal class Character
+    public class Character
     {
         public InventorySystem inventory = new InventorySystem(10);
-        public InventorySystem armorAndWeapon = new InventorySystem(5);
+        public ArmorAndWeapon armorAndWeapon = new ArmorAndWeapon();
         string name = "";
         string proffesion = "";
         int strength = 1;
@@ -264,11 +264,15 @@
             
 
             Console.WriteLine("\n");
-            switch (systemInterface.DrawMenuAndReturnAction(new string[] { "Посмотреть инвентарь", "Назад" })) 
+            switch (systemInterface.DrawMenuAndReturnAction(new string[] { "Инвентарь","Снаряжение", "Назад" })) 
             {
-                case "Посмотреть инвентарь":
+                case "Инвентарь":
                     Console.Clear();
-                    systemInterface.InventorySelectMenu(inventory, false, "Информация", game);
+                    systemInterface.InventorySelectMenu(inventory,armorAndWeapon, false, "Информация", game);
+                    break;
+                case "Снаряжение":
+                    Console.Clear();
+                    systemInterface.DisplayWearingSelectMenu(inventory,armorAndWeapon,"Информация", game);
                     break;
                 case "Назад":
                     Console.Clear();

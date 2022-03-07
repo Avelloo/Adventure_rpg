@@ -1,0 +1,15 @@
+C:\Users\aloob\Desktop\Adventure_rpg\Adventure_rpg\bin\Release\net6.0\Adventure_rpg.exe
+C:\Users\aloob\Desktop\Adventure_rpg\Adventure_rpg\bin\Release\net6.0\Adventure_rpg.deps.json
+C:\Users\aloob\Desktop\Adventure_rpg\Adventure_rpg\bin\Release\net6.0\Adventure_rpg.runtimeconfig.json
+C:\Users\aloob\Desktop\Adventure_rpg\Adventure_rpg\bin\Release\net6.0\Adventure_rpg.dll
+C:\Users\aloob\Desktop\Adventure_rpg\Adventure_rpg\bin\Release\net6.0\ref\Adventure_rpg.dll
+C:\Users\aloob\Desktop\Adventure_rpg\Adventure_rpg\bin\Release\net6.0\Adventure_rpg.pdb
+C:\Users\aloob\Desktop\Adventure_rpg\Adventure_rpg\obj\Release\net6.0\Adventure_rpg.csproj.AssemblyReference.cache
+C:\Users\aloob\Desktop\Adventure_rpg\Adventure_rpg\obj\Release\net6.0\Adventure_rpg.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\aloob\Desktop\Adventure_rpg\Adventure_rpg\obj\Release\net6.0\Adventure_rpg.AssemblyInfoInputs.cache
+C:\Users\aloob\Desktop\Adventure_rpg\Adventure_rpg\obj\Release\net6.0\Adventure_rpg.AssemblyInfo.cs
+C:\Users\aloob\Desktop\Adventure_rpg\Adventure_rpg\obj\Release\net6.0\Adventure_rpg.csproj.CoreCompileInputs.cache
+C:\Users\aloob\Desktop\Adventure_rpg\Adventure_rpg\obj\Release\net6.0\Adventure_rpg.dll
+C:\Users\aloob\Desktop\Adventure_rpg\Adventure_rpg\obj\Release\net6.0\ref\Adventure_rpg.dll
+C:\Users\aloob\Desktop\Adventure_rpg\Adventure_rpg\obj\Release\net6.0\Adventure_rpg.pdb
+C:\Users\aloob\Desktop\Adventure_rpg\Adventure_rpg\obj\Release\net6.0\Adventure_rpg.genruntimeconfig.cache

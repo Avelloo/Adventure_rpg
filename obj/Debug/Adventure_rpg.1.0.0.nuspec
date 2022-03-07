@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Adventure_rpg</id>
+    <version>1.0.0</version>
+    <authors>Adventure_rpg</authors>
+    <description>Package Description</description>
+    <dependencies>
+      <group targetFramework="net6.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\aloob\Desktop\Adventure_rpg\Adventure_rpg\bin\Debug\net6.0\Adventure_rpg.runtimeconfig.json" target="lib\net6.0\Adventure_rpg.runtimeconfig.json" />
+    <file src="C:\Users\aloob\Desktop\Adventure_rpg\Adventure_rpg\bin\Debug\net6.0\Adventure_rpg.dll" target="lib\net6.0\Adventure_rpg.dll" />
+  </files>
+</package>

@@ -1,0 +1,5 @@
+C:\Users\aloob\Desktop\release\Adventure_rpg.exe
+C:\Users\aloob\Desktop\release\Adventure_rpg.dll
+C:\Users\aloob\Desktop\release\Adventure_rpg.deps.json
+C:\Users\aloob\Desktop\release\Adventure_rpg.runtimeconfig.json
+C:\Users\aloob\Desktop\release\Adventure_rpg.pdb

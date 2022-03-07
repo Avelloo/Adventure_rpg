@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Adventure_rpg
 {
-    internal class Game
+    public class Game
     {
         private Character mainCharacter = new Character();
        
@@ -28,6 +28,7 @@ namespace Adventure_rpg
             {
                 case "Воин":
                     systemInterface.AddToInventory(mainCharacter.inventory, "oldSword", 1, "Не хватает места!");
+                    systemInterface.AddToInventory(mainCharacter.inventory, "oldStaff", 1, "Не хватает места!");
                     systemInterface.AddToInventory(mainCharacter.inventory, "tornShirt", 1, "Не хватает места!");
                     systemInterface.AddToInventory(mainCharacter.inventory, "dirtyPants", 1, "Не хватает места!");
                     break;
@@ -57,15 +58,17 @@ namespace Adventure_rpg
                             break;
 
                     }
-                    systemInterface.AddToInventory(mainCharacter.inventory, "apple", 5, "Не хватает места!");
-                    systemInterface.AddToInventory(mainCharacter.inventory, "tornShirt", 1, "Не хватает места!");
-                    systemInterface.AddToInventory(mainCharacter.inventory, "dirtyPants", 1, "Не хватает места!");
                     break;
             }
+            systemInterface.AddToInventory(mainCharacter.inventory, "apple", 5, "Не хватает места!");
         }
         public void ChooseAction()
         {
+
             Console.Clear();
+
+            CalculateDmgArmor(mainCharacter);
+
             Console.WriteLine("Выберите, что хотите сделать:");
             switch (systemInterface.DrawMenuAndReturnAction(new string[] { "Идти в бой", "Зайти к торговцу","О персонаже","Сохранить игру","","","Выйти из игры" }))
             {
@@ -97,6 +100,12 @@ namespace Adventure_rpg
                     ChooseAction();
                     break;
             }
+        }
+        public void CalculateDmgArmor(Character character)
+        {
+            Console.WriteLine("Твои статы:");
+            Console.WriteLine($"Урон: {character.armorAndWeapon.GetWeaponDamage()}");
+            Console.WriteLine($"Защита: {character.armorAndWeapon.GetDefenceCombined()}");
         }
     }
 
