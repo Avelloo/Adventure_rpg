@@ -28,7 +28,6 @@ namespace Adventure_rpg
             {
                 case "Воин":
                     systemInterface.AddToInventory(mainCharacter.inventory, "oldSword", 1, "Не хватает места!");
-                    systemInterface.AddToInventory(mainCharacter.inventory, "oldStaff", 1, "Не хватает места!");
                     systemInterface.AddToInventory(mainCharacter.inventory, "tornShirt", 1, "Не хватает места!");
                     systemInterface.AddToInventory(mainCharacter.inventory, "dirtyPants", 1, "Не хватает места!");
                     break;
@@ -61,6 +60,7 @@ namespace Adventure_rpg
                     break;
             }
             systemInterface.AddToInventory(mainCharacter.inventory, "apple", 5, "Не хватает места!");
+            systemInterface.AddToInventory(mainCharacter.inventory, "dirtyPants", 1, "Не хватает места!");
         }
         public void ChooseAction()
         {
