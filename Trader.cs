@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace Adventure_rpg
 {
-    internal class Trader
+    public class Trader
     {
-       
+        InventorySystem traderInventory = new InventorySystem(5);
+        public void AddItemsToTrader()
+        {
 
+        }
     }
 }
