@@ -340,6 +340,9 @@
                     Console.WriteLine("\n" + " Действия:");
                     switch (DrawMenuAndReturnAction(foodOptions))
                     {
+                        case "Использовать":
+                            TryToHeal(inventory, armorAndWeapon, currentGame, index, canSell, backAction, "У вас максимальное хп!");
+                            break;
                         case "Выбросить":
                             Console.WriteLine($"Введите количество, которое хотите удалить.(Всего {inventory.GetInventoryCell(index).thisItem.name} в инвентаре: {inventory.CountItem(inventory.GetInventoryCell(index).thisItem)}.)");
                             if (!Int32.TryParse(Console.ReadLine(), out amountToDelete))
@@ -362,8 +365,8 @@
                                     Console.Clear();
                                     InventorySelectMenu(inventory, armorAndWeapon, canSell, backAction, currentGame);
                                 }
-                                
-                                
+
+
                             }
                             break;
                         case "Назад":
@@ -381,7 +384,7 @@
                     switch (DrawMenuAndReturnAction(armorAmdWeaponOptions))
                     {
                         case "Экипировать":
-                            armorAndWeapon.TryToWear(inventory.GetInventoryCell(index).thisItem,currentGame, inventory, "У вас в инвентаре недостаточно места!");
+                            armorAndWeapon.TryToWear(inventory.GetInventoryCell(index).thisItem, currentGame, inventory, "У вас в инвентаре недостаточно места!");
                             Console.Clear();
                             InventorySelectMenu(inventory, armorAndWeapon, canSell, backAction, currentGame);
                             break;
@@ -430,7 +433,7 @@
                     switch (DrawMenuAndReturnAction(armorAmdWeaponOptions))
                     {
                         case "Экипировать":
-                            armorAndWeapon.TryToWear(inventory.GetInventoryCell(index).thisItem,currentGame, inventory, "У вас в инвентаре недостаточно места!");
+                            armorAndWeapon.TryToWear(inventory.GetInventoryCell(index).thisItem, currentGame, inventory, "У вас в инвентаре недостаточно места!");
                             Console.Clear();
                             InventorySelectMenu(inventory, armorAndWeapon, canSell, backAction, currentGame);
                             break;
@@ -717,7 +720,7 @@
             }
             else
             {
-                
+
                 Console.Write($"Защита:   [Инвентарь]:{compareInfo1,-15} [Надето]:{compareInfo2,-15}");
             }
 
@@ -760,6 +763,53 @@
                 DrawMenu(options, index, true);
             }
             return "";
+        }
+
+        public static void TryToHeal(InventorySystem inventory, ArmorAndWeapon armorAndWeapon, Game currentGame, int index, bool canSell, string backAction, string errorMsg)
+        {
+            if (currentGame.Character.CurrentHealth < currentGame.Character.MaxHealth)
+            {
+                int tempHP = currentGame.Character.CurrentHealth;
+                currentGame.Character.CurrentHealth += HealConsumables.GetFoodHealInfo((HealConsumables)inventory.GetInventoryCell(index).thisItem);
+                if (currentGame.Character.CurrentHealth > currentGame.Character.MaxHealth) currentGame.Character.CurrentHealth = currentGame.Character.MaxHealth;
+                
+
+                if (inventory.GetInventoryCell(index).Quantity > 1 &&
+
+                    (inventory.GetInventoryCell(index).thisItem.type == "Еда" ||
+                    inventory.GetInventoryCell(index).thisItem.type == "Лечебное зелье")
+                    )
+                {
+                    inventory.removeItemFromInventory(inventory.GetInventoryCell(index).thisItem, 1);
+                    Console.Clear();
+                    Console.WriteLine($"\n\nВы восстановили [{currentGame.Character.CurrentHealth - tempHP}] хп.");
+                    Console.WriteLine("\nНажмите любую клавишу, чтобы продолжить");
+                    Console.ReadLine();
+                    Console.Clear();
+                    DisplaySelectedItemInfo(inventory, armorAndWeapon, index, canSell, backAction, currentGame);
+                }
+                else
+                {
+                    inventory.removeItemFromInventory(inventory.GetInventoryCell(index).thisItem, 1);
+                    Console.Clear();
+                    Console.WriteLine($"\n\nВы восстановили [{currentGame.Character.CurrentHealth - tempHP}] хп.");
+                    Console.WriteLine("\nНажмите любую клавишу, чтобы продолжить");
+                    Console.ReadLine();
+                    Console.Clear();
+                    InventorySelectMenu(inventory, armorAndWeapon, canSell, backAction, currentGame);
+                }
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine();
+                Console.WriteLine(errorMsg);
+                Console.WriteLine("\nНажмите любую клавишу, чтобы продолжить");
+                Console.ReadLine();
+                Console.Clear();
+                DisplaySelectedItemInfo(inventory, armorAndWeapon, index, canSell, backAction, currentGame);
+
+            }
         }
     }
 
