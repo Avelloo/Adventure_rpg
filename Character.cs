@@ -32,10 +32,11 @@
 
         public void CreateCharacter() //создание персонажа
         {
-
-
-            Console.Clear();
-            Console.WriteLine(@"               _   _                _____                      
+            bool nameSelected = false;
+            while (nameSelected == false)
+            {
+                Console.Clear();
+                Console.WriteLine(@"               _   _                _____                      
      /\       | | (_)              / ____|                     
     /  \   ___| |_ _  ___  _ __   | |  __  __ _ _ __ ___   ___ 
    / /\ \ / __| __| |/ _ \| '_ \  | | |_ |/ _` | '_ ` _ \ / _ \
@@ -43,28 +44,30 @@
  /_/    \_\___|\__|_|\___/|_| |_|  \_____|\__,_|_| |_| |_|\___|
                                                                
                                                                ");
-            Console.WriteLine("Привет! Начинаем создание персонажа.");
-            switch (systemInterface.DrawMenuAndReturnAction(new string[] { "Ввести имя", "Сгенерировать имя" }))
-            {
+                Console.WriteLine("Привет! Начинаем создание персонажа.");
+                switch (systemInterface.DrawMenuAndReturnAction(new string[] { "Ввести имя", "Сгенерировать имя" }))
+                {
 
-                case "Ввести имя":
-                    Console.WriteLine("\nВведите имя: ");
-                    name = Console.ReadLine();
-                    break;
-                case "Сгенерировать имя":
-                    name = GeneratingName();
-                    break;
-                default:
-                    CreateCharacter();
-                    break;
+                    case "Ввести имя":
+                        Console.WriteLine("\nВведите имя: ");
+                        name = Console.ReadLine();
+                        break;
+                    case "Сгенерировать имя":
+                        name = GeneratingName();
+                        break;
+                    default:
+                        break;
+                }
+
+
+
+
+                if (name != null && name != "" && name.Trim().Length > 1) nameSelected = true;            
+            
             }
 
 
 
-
-            if (name == null || name == "" || name.Trim().Length <= 1) CreateCharacter();
-
-            selection:
             Console.Clear();
             Console.WriteLine("Выберите класс:");
             systemInterface.ColorWrite(" Воин     - герой ближнего боя,\n\t +1 к силе со старта игры, может использовать мечи.\n", "Воин", ConsoleColor.Red);
@@ -95,9 +98,6 @@
                     skillPoints -= 1;
 
                     break;
-                default:
-                    goto selection;
-
 
 
             }
