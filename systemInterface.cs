@@ -66,7 +66,7 @@
                 {
                     if(ItemList.getItemByName(ItemList.allItems, options[i]) != null)
                     {
-                        postfix[i] = $"Цена: [{ItemList.getItemByName(ItemList.allItems, options[i]).buyPrice.ToString()}]";
+                        postfix[i] = $"Цена: [{ItemList.getItemByName(ItemList.allItems, options[i]).buyPrice.ToString(),2}]";
                     }
                     
                 }
