@@ -17,11 +17,11 @@
         static Weapon scoutBow = new Weapon("Лук разведчика", "Гибкий, но в то же время очень прочный лук", "Оружие", 6, "Лучник", 10, 4);
         // 2 тир
         static Weapon silverSword = new Weapon("Серебряный меч", "На рукояти нарисовано множество замысловатых рисунков...", "Оружие", 12, "Воин", 20, 11);
-        static Weapon rubyStaff = new Weapon("Рубиновый посох", "Красивый посох с рубином. Очень ярко светится.", "Оружие", 12, "Воин", 20, 11);
+        static Weapon rubyStaff = new Weapon("Рубиновый посох", "Красивый посох с рубином. Очень ярко светится.", "Оружие", 12, "Маг", 20, 11);
         static Weapon silverBow = new Weapon("Серебряный лук", "Лук из серебра с невероятно прочной тетивой", "Оружие", 12, "Лучник", 20, 11);
         // 3 тир
         static Weapon platinumSword = new Weapon("Платиновый меч", "Легкий и очень прочный!", "Оружие", 20, "Воин", 30, 21);
-        static Weapon lostStaff = new Weapon("Потерянный посох", "Посох из легенд. Считалось, что он был давно утерян..", "Оружие", 20, "Воин", 30, 21);
+        static Weapon lostStaff = new Weapon("Потерянный посох", "Посох из легенд. Считалось, что он был давно утерян..", "Оружие", 20, "Маг", 30, 21);
         static Weapon platinumBow = new Weapon("Платиновый лук", "Ощущение, будто стрелы сами летят на ваших врагов..", "Оружие", 20, "Лучник", 30, 21);
 
 
@@ -46,10 +46,10 @@
         static Armor platinumHelmet = new Armor("Платиновый шлем", "В нем вы похожи на королевскую прислугу 0_о...", 6, "Шлем", 18, 12);
 
         //Хилки                                    Название   Описание        Тип     Стак  Хил
-        static HealConsumables apple = new HealConsumables("Яблоко", "Просто яблоко", "Еда", 15, 3, 2, 1);
-        static HealConsumables smallHealPotion = new HealConsumables("Малое зелье лечения", "Сразу станет лучше", "Целебное зелье", 5, 10, 4, 2);
-        static HealConsumables mediumHealPotion = new HealConsumables("Среднее зелье лечения", "Сразу станет лучше", "Целебное зелье", 5, 20, 8, 4);
-        static HealConsumables largeHealPotion = new HealConsumables("Большое зелье лечения", "Сразу станет лучше", "Целебное зелье", 5, 40, 15, 8);
+        static HealConsumables apple = new HealConsumables("Яблоко", "Просто яблоко", "Еда", 30, 3, 2, 1);
+        static HealConsumables smallHealPotion = new HealConsumables("Малое зелье лечения", "Сразу станет лучше", "Целебное зелье", 15, 10, 4, 2);
+        static HealConsumables mediumHealPotion = new HealConsumables("Среднее зелье лечения", "Сразу станет лучше", "Целебное зелье", 15, 20, 8, 4);
+        static HealConsumables largeHealPotion = new HealConsumables("Большое зелье лечения", "Сразу станет лучше", "Целебное зелье", 15, 40, 15, 8);
 
 
 
@@ -68,6 +68,10 @@
             {"rubyStaff", rubyStaff},
             {"silverBow",silverBow},
             {"silverSword",silverSword },
+
+            {"platinumBow", platinumBow},
+            {"platinumSword",platinumSword},
+            {"lostStaff",lostStaff },
 
             {"tornShirt", tornShirt},
             {"dirtyPants", dirtyPants },
@@ -142,7 +146,19 @@
             {"largeHealPotion", largeHealPotion }
         };
 
+        public static Item getItemByName(Dictionary<string,Item> itemList, string itemName)
+        {
+            foreach(KeyValuePair<string,Item> i in itemList)
+            {
+                if(i.Value.name == itemName)
+                {
+                    return i.Value;
+                }
 
+                
+            }
+            return null;
+        }
 
     }
 }

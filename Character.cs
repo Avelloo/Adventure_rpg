@@ -3,8 +3,8 @@
 
     public class Character
     {
-        public InventorySystem inventory = new InventorySystem(10);
-        public ArmorAndWeapon armorAndWeapon = new ArmorAndWeapon();
+        public InventorySystem characterInventory = new InventorySystem(10);
+        private ArmorAndWeapon armorAndWeapon = new ArmorAndWeapon();
         string name = "";
         string proffesion = "";
         int strength = 1;
@@ -13,8 +13,8 @@
         int currentExp = 0;
         int currentAttack = 0;
         int currentDefence = 0;
-        int charLVL = 1;
-        int money = 0;
+        int charLVL = 7;
+        int money = 100;
         int maxHealth = 100;
 
         int currentHealth = 0;
@@ -31,6 +31,7 @@
         public string Proffesion { get => proffesion; set => proffesion = value; }
         public int CharLVL { get => charLVL; set => charLVL = value; }
         public int Money { get => money; set => money = value; }
+        public ArmorAndWeapon ArmorAndWeapon { get => armorAndWeapon; set => armorAndWeapon = value; }
 
         public void CreateCharacter() //создание персонажа
         {
@@ -44,7 +45,7 @@
    / /\ \ / __| __| |/ _ \| '_ \  | | |_ |/ _` | '_ ` _ \ / _ \
   / ____ | (__| |_| | (_) | | | | | |__| | (_| | | | | | |  __/
  /_/    \_\___|\__|_|\___/|_| |_|  \_____|\__,_|_| |_| |_|\___|
-                                                               
+                                                           suck some dick    
                                                                ");
                 Console.WriteLine("Привет! Начинаем создание персонажа.");
                 switch (systemInterface.DrawMenuAndReturnAction(new string[] { "Ввести имя", "Сгенерировать имя" }))
@@ -266,11 +267,11 @@
             {
                 case "Инвентарь":
                     Console.Clear();
-                    systemInterface.InventorySelectMenu(inventory, armorAndWeapon, false, "Информация", game);
+                    systemInterface.InventorySelectMenu(characterInventory, armorAndWeapon, false, "Информация", game);
                     break;
                 case "Снаряжение":
                     Console.Clear();
-                    systemInterface.DisplayWearingSelectMenu(inventory, armorAndWeapon, "Информация", game);
+                    systemInterface.DisplayWearingSelectMenu(characterInventory, armorAndWeapon, "Информация", game);
                     break;
                 case "Назад":
                     Console.Clear();

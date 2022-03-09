@@ -9,7 +9,7 @@ namespace Adventure_rpg
     public class Game
     {
         private Character mainCharacter = new Character();
-       
+        Trader trader = new Trader();
         internal Character Character { get => mainCharacter; set => mainCharacter = value; }
 
         public void Gameplay()
@@ -27,19 +27,14 @@ namespace Adventure_rpg
             switch (character.Proffesion)
             {
                 case "Воин":
-                    systemInterface.AddToInventory(mainCharacter.inventory, "oldSword", 1, "Не хватает места!");
-                    systemInterface.AddToInventory(mainCharacter.inventory, "tornShirt", 1, "Не хватает места!");
-                    systemInterface.AddToInventory(mainCharacter.inventory, "dirtyPants", 1, "Не хватает места!");
+                    systemInterface.AddToInventory(mainCharacter.characterInventory, "oldSword", 1, "Не хватает места!");
                     break;
                 case "Маг":
-                    systemInterface.AddToInventory(mainCharacter.inventory, "oldStaff", 1, "Не хватает места!");
-                    systemInterface.AddToInventory(mainCharacter.inventory, "tornShirt", 1, "Не хватает места!");
-                    systemInterface.AddToInventory(mainCharacter.inventory, "dirtyPants", 1, "Не хватает места!");
+                    systemInterface.AddToInventory(mainCharacter.characterInventory, "oldStaff", 1, "Не хватает места!");
                     break;
                 case "Лучник":
-                    systemInterface.AddToInventory(mainCharacter.inventory, "oldBow", 1, "Не хватает места!");
-                    systemInterface.AddToInventory(mainCharacter.inventory, "tornShirt", 1, "Не хватает места!");
-                    systemInterface.AddToInventory(mainCharacter.inventory, "dirtyPants", 1, "Не хватает места!");
+                    systemInterface.AddToInventory(mainCharacter.characterInventory, "oldBow", 1, "Не хватает места!");
+                    
                     break;
                 case "Странник":
                     Console.Clear();
@@ -47,20 +42,22 @@ namespace Adventure_rpg
                     switch (systemInterface.DrawMenuAndReturnAction(new string[] {"Меч","Лук","Посох"}))
                     {
                         case "Меч":
-                            systemInterface.AddToInventory(mainCharacter.inventory, "oldSword", 1, "Не хватает места!");
+                            systemInterface.AddToInventory(mainCharacter.characterInventory, "oldSword", 1, "Не хватает места!");
                             break;
                         case "Лук":
-                            systemInterface.AddToInventory(mainCharacter.inventory, "oldBow", 1, "Не хватает места!");
+                            systemInterface.AddToInventory(mainCharacter.characterInventory, "oldBow", 1, "Не хватает места!");
                             break;
                         case "Посох":
-                            systemInterface.AddToInventory(mainCharacter.inventory, "oldStaff", 1, "Не хватает места!");
+                            systemInterface.AddToInventory(mainCharacter.characterInventory, "oldStaff", 1, "Не хватает места!");
                             break;
 
                     }
                     break;
             }
-            systemInterface.AddToInventory(mainCharacter.inventory, "apple", 5, "Не хватает места!");
-            systemInterface.AddToInventory(mainCharacter.inventory, "dirtyPants", 1, "Не хватает места!");
+            systemInterface.AddToInventory(mainCharacter.characterInventory, "tornShirt", 1, "Не хватает места!");
+            systemInterface.AddToInventory(mainCharacter.characterInventory, "dirtyPants", 1, "Не хватает места!");
+            systemInterface.AddToInventory(mainCharacter.characterInventory, "apple", 5, "Не хватает места!");
+            trader.AddItemsToTrader();
         }
         public void ChooseAction()
         {
@@ -79,8 +76,7 @@ namespace Adventure_rpg
                     break;
                 case "Зайти к торговцу":
                     Console.Clear();
-                    Console.WriteLine("Ещё не сделано");
-                    ChooseAction();
+                    trader.DisplayItems(this, mainCharacter.ArmorAndWeapon);
                     break;
                 case "О персонаже":
                     Console.Clear();
@@ -104,8 +100,8 @@ namespace Adventure_rpg
         public void CalculateDmgArmor(Character character)
         {
             Console.WriteLine("Твои статы:");
-            Console.WriteLine($"Урон: {character.armorAndWeapon.GetWeaponDamage()}");
-            Console.WriteLine($"Защита: {character.armorAndWeapon.GetDefenceCombined()}");
+            Console.WriteLine($"Урон: {character.ArmorAndWeapon.GetWeaponDamage()}");
+            Console.WriteLine($"Защита: {character.ArmorAndWeapon.GetDefenceCombined()}");
         }
     }
 
