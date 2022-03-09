@@ -29,6 +29,8 @@
         public int PlayerDMG { get => playerDMG; set => playerDMG = value; }
         public int PlayerDefencePercentage { get => playerDefencePercentage; set => playerDefencePercentage = value; }
         public string Proffesion { get => proffesion; set => proffesion = value; }
+        public int CharLVL { get => charLVL; set => charLVL = value; }
+        public int Money { get => money; set => money = value; }
 
         public void CreateCharacter() //создание персонажа
         {
@@ -249,9 +251,9 @@
             systemInterface.ColorWrite($"Сила: {strength}/10\n", "Сила", ConsoleColor.DarkRed);
             systemInterface.ColorWrite($"Ловкость: {agility}/10\n", "Ловкость", ConsoleColor.DarkGreen);
             systemInterface.ColorWrite($"Интеллект: {intelligence}/10\n", "Интеллект", ConsoleColor.DarkBlue);
-            if (money > 0)
+            if (Money > 0)
             {
-                systemInterface.ColorWrite($"Твой кошель наполнен на [{money}] золота.\n", "золота", ConsoleColor.Yellow);
+                systemInterface.ColorWrite($"Твой кошель наполнен на [{Money}] золота.\n", "золота", ConsoleColor.Yellow);
             }
             else
             {

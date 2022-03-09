@@ -811,6 +811,269 @@
 
             }
         }
+
+
+        static void TraderDisplaySelectedItemInfo(InventorySystem inventory, int index, string backAction, Game currentGame, ArmorAndWeapon armorAndWeapon)
+        {
+            int amountToDelete = 0;
+            string[] foodOptions = {"Купить" };
+            string[] armorAmdWeaponOptions = {"Сравнить", "Купить" };
+            
+            Array.Resize(ref foodOptions, foodOptions.Length + 1);
+            Array.Resize(ref armorAmdWeaponOptions, armorAmdWeaponOptions.Length + 1);
+            foodOptions[foodOptions.Length - 1] = "Назад";
+            armorAmdWeaponOptions[armorAmdWeaponOptions.Length - 1] = "Назад";
+
+
+
+            Console.Clear();
+            Console.WriteLine($" Ячейка [{index + 1}]");
+            Console.WriteLine(" Предмет: " + inventory.GetInventoryCell(index).thisItem.name + ", " + inventory.GetInventoryCell(index).thisItem.type);
+            Console.WriteLine("\n" + " О предмете:\n " + inventory.GetInventoryCell(index).thisItem.description);
+
+            if (inventory.GetInventoryCell(index).thisItem.maxSTACK > 1)
+            {
+                Console.WriteLine(" Кол-во {0}/{1}.", inventory.GetInventoryCell(index).Quantity, inventory.GetInventoryCell(index).thisItem.maxSTACK);
+            }
+            switch (inventory.GetInventoryCell(index).thisItem.type)
+            {
+                case "Целебное зелье":
+                case "Еда":
+                    Console.WriteLine($" Восстанавливает [{HealConsumables.GetFoodHealInfo((HealConsumables)inventory.GetInventoryCell(index).thisItem)}] хп.");
+                    systemInterface.ColorWrite($" У вас сейчас {currentGame.Character.CurrentHealth}/{currentGame.Character.MaxHealth} хп.",
+                                                                 currentGame.Character.CurrentHealth.ToString(), ConsoleColor.DarkRed);
+                    Console.WriteLine("\n" + " Действия:");
+                    switch (DrawMenuAndReturnAction(foodOptions))
+                    {
+                        case "Купить":
+                            Console.WriteLine($"Введите количество, которое хотите купить.(Всего {inventory.GetInventoryCell(index).thisItem.name} доступно: {inventory.CountItem(inventory.GetInventoryCell(index).thisItem)}.)");
+                            if (!Int32.TryParse(Console.ReadLine(), out amountToDelete))
+                            {
+                                Console.Clear();
+                                TraderInventorySelectMenu(inventory, backAction, currentGame);
+                            }
+                            else
+                            {
+                                if (amountToDelete <= inventory.CountItem(inventory.GetInventoryCell(index).thisItem) 
+                                    && amountToDelete > 0
+                                    && currentGame.Character.Money >= (amountToDelete * inventory.GetInventoryCell(index).thisItem.buyPrice))
+                                {
+                                    currentGame.Character.Money -= amountToDelete * inventory.GetInventoryCell(index).thisItem.buyPrice;
+                                    inventory.removeItemFromInventory(inventory.GetInventoryCell(index).thisItem, amountToDelete);
+                                    Console.Clear();
+                                    TraderInventorySelectMenu(inventory, backAction, currentGame);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Не удалось купить предмет. Нажмите любую клавишу, чтобы продолжить.");
+                                    Console.ReadKey();
+                                    Console.Clear();
+                                    TraderInventorySelectMenu(inventory, backAction, currentGame);
+                                }
+
+
+                            }
+                            break;
+                        case "Назад":
+                            Console.Clear();
+                            TraderInventorySelectMenu(inventory, backAction, currentGame);
+                            break;
+                    }
+                    break;
+                case "Нагрудник":
+                case "Перчатки":
+                case "Шлем":
+                case "Штаны":
+                    Console.WriteLine($" Дает [{Armor.GetArmorDefence((Armor)inventory.GetInventoryCell(index).thisItem)}] брони.");
+                    Console.WriteLine("\n" + " Действия:");
+                    switch (DrawMenuAndReturnAction(armorAmdWeaponOptions))
+                    {
+                        case "Сравнить":
+                            Console.Clear();
+                            CompareWearings(inventory.GetInventoryCell(index).thisItem, armorAndWeapon);
+                            TraderInventorySelectMenu(inventory, backAction, currentGame);
+                            break;
+                        case "Купить":
+                            Console.WriteLine($"Введите количество, которое хотите купить.(Всего {inventory.GetInventoryCell(index).thisItem.name} доступно\nдля покупки: {inventory.CountItem(inventory.GetInventoryCell(index).thisItem)}.)");
+                            if (!Int32.TryParse(Console.ReadLine(), out amountToDelete))
+                            {
+                                Console.Clear();
+                                TraderInventorySelectMenu(inventory, backAction, currentGame);
+                            }
+                            else
+                            {
+                                if (amountToDelete <= inventory.CountItem(inventory.GetInventoryCell(index).thisItem)
+                                    && amountToDelete > 0
+                                    && currentGame.Character.Money >= (amountToDelete * inventory.GetInventoryCell(index).thisItem.buyPrice))
+                                {
+                                    currentGame.Character.Money -= amountToDelete * inventory.GetInventoryCell(index).thisItem.buyPrice;
+                                    inventory.removeItemFromInventory(inventory.GetInventoryCell(index).thisItem, amountToDelete);
+                                    Console.Clear();
+                                    TraderInventorySelectMenu(inventory, backAction, currentGame);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Не удалось купить предмет. Нажмите любую клавишу, чтобы продолжить.");
+                                    Console.ReadKey();
+                                    Console.Clear();
+                                    TraderInventorySelectMenu(inventory, backAction, currentGame);
+                                }
+
+
+                            }
+                            break;
+                        case "Назад":
+                            Console.Clear();
+                            TraderInventorySelectMenu(inventory, backAction, currentGame);
+                            break;
+                    }
+
+                    break;
+                case "Оружие":
+                    Console.WriteLine($" Для класса [{Weapon.GetWeaponClass((Weapon)inventory.GetInventoryCell(index).thisItem)}].");
+                    Console.WriteLine($" Наносит [{Weapon.GetWeaponDamage((Weapon)inventory.GetInventoryCell(index).thisItem)}] урона.");
+                    Console.WriteLine("\n" + " Действия:");
+                    switch (DrawMenuAndReturnAction(armorAmdWeaponOptions))
+                    {
+                        case "Сравнить":
+                            Console.Clear();
+                            CompareWearings(inventory.GetInventoryCell(index).thisItem, armorAndWeapon);
+                            TraderInventorySelectMenu(inventory, backAction, currentGame);
+                            break;
+                        case "Купить":
+                            Console.WriteLine($"Введите количество, которое хотите купить.(Всего {inventory.GetInventoryCell(index).thisItem.name} доступно\nдля покупки: {inventory.CountItem(inventory.GetInventoryCell(index).thisItem)}.)");
+                            if (!Int32.TryParse(Console.ReadLine(), out amountToDelete))
+                            {
+                                Console.Clear();
+                                TraderInventorySelectMenu(inventory, backAction, currentGame);
+                            }
+                            else
+                            {
+                                if (amountToDelete <= inventory.CountItem(inventory.GetInventoryCell(index).thisItem)
+                                    && amountToDelete > 0
+                                    && currentGame.Character.Money >= (amountToDelete * inventory.GetInventoryCell(index).thisItem.buyPrice))
+                                {
+                                    currentGame.Character.Money -= amountToDelete * inventory.GetInventoryCell(index).thisItem.buyPrice;
+                                    inventory.removeItemFromInventory(inventory.GetInventoryCell(index).thisItem, amountToDelete);
+                                    Console.Clear();
+                                    TraderInventorySelectMenu(inventory, backAction, currentGame);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Не удалось купить предмет. Нажмите любую клавишу, чтобы продолжить.");
+                                    Console.ReadKey();
+                                    Console.Clear();
+                                    TraderInventorySelectMenu(inventory, backAction, currentGame);
+                                }
+
+
+                            }
+                            break;
+                        case "Назад":
+                            Console.Clear();
+                            TraderInventorySelectMenu(inventory, backAction, currentGame);
+                            break;
+                    }
+                    break;
+
+
+            }
+
+
+
+
+
+        }
+        public static void TraderInventorySelectMenu(InventorySystem inventory,string backAction, Game currentGame, ArmorAndWeapon armorAndWeapon)//инвентарь с меню и кнопкой назад
+        {
+            Console.WriteLine(@"");
+            string[] options = new string[inventory.GetMaxSlots() + 2];
+            string[] slotAmount = new string[inventory.GetMaxSlots() + 2];
+            int currentIndex = 0;
+            bool selected = false;
+            for (int i = 0; i < inventory.GetMaxSlots(); i++)
+            {
+                if (inventory.IsCellExist(i))
+                {
+                    options[i] = inventory.GetInventoryCell(i).thisItem.name;
+                    if (inventory.GetInventoryCell(i).thisItem.maxSTACK > 1)
+                    {
+                        slotAmount[i] = " x" + inventory.GetInventoryCell(i).Quantity.ToString();
+                    }
+                    else
+                    {
+                        slotAmount[i] = "   ";
+                    }
+
+                }
+                else
+                {
+                    options[i] = "Пустая ячейка";
+                    slotAmount[i] = "  ";
+                }
+            }
+
+            options[inventory.GetMaxSlots() + 1] = "Назад";
+
+            DrawInventoryMenu(options, slotAmount, currentIndex, false);
+            while (selected == false)
+            {
+                ConsoleKeyInfo keyPressed = Console.ReadKey();
+
+                switch (keyPressed.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        currentIndex--;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        currentIndex++;
+                        break;
+                    case ConsoleKey.Enter:
+                        if (currentIndex < inventory.GetMaxSlots() && inventory.IsCellExist(currentIndex))
+                        {
+                            selected = true;
+                            TraderDisplaySelectedItemInfo(inventory, currentIndex, backAction, currentGame, armorAndWeapon);
+                            continue;
+                        }
+                        else if (currentIndex == inventory.GetMaxSlots() + 1)
+                        {
+                            selected = true;
+                            switch (backAction)
+                            {
+                                case "Торговец":
+                                    throw new Exception("Торговец ещё не сделан");
+                                    break;
+                                case "Информация":
+                                    currentGame.Character.Greetings(currentGame);
+                                    break;
+                            }
+                            continue;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                if (currentIndex > options.Length - 1)
+                {
+                    currentIndex = 0;
+                }
+                else if (currentIndex < 0)
+                {
+                    currentIndex = options.Length - 1;
+                }
+
+                DrawInventoryMenu(options, slotAmount, currentIndex, true);
+
+
+            }
+
+        }
+
+
     }
 
 }
