@@ -115,6 +115,11 @@
 
         }
 
+        public void SellItems(Game currentGame, ArmorAndWeapon armorAndWeapon)
+        {
+            systemInterface.InventorySelectMenu(currentGame.Character.characterInventory, armorAndWeapon, true, "Торговец", currentGame);
+        }
+
 
 
 

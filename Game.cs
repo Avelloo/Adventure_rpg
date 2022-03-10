@@ -76,7 +76,7 @@ namespace Adventure_rpg
                     break;
                 case "Зайти к торговцу":
                     Console.Clear();
-                    trader.DisplayItems(this, mainCharacter.ArmorAndWeapon);
+                    TraderOptions();
                     break;
                 case "О персонаже":
                     Console.Clear();
@@ -102,6 +102,30 @@ namespace Adventure_rpg
             Console.WriteLine("Твои статы:");
             Console.WriteLine($"Урон: {character.ArmorAndWeapon.GetWeaponDamage()}");
             Console.WriteLine($"Защита: {character.ArmorAndWeapon.GetDefenceCombined()}");
+        }
+        public void TraderOptions()
+        {
+            Console.Clear();
+            Console.WriteLine();
+            switch (systemInterface.DrawMenuAndReturnAction(new string[] { "Купить предметы", "Продать предметы", "", "Назад" }))
+            {
+                case "Купить предметы":
+                    Console.Clear();
+                    trader.DisplayItems(this, mainCharacter.ArmorAndWeapon);
+                    break;
+                case "Продать предметы":
+                    Console.Clear();
+                    trader.SellItems(this, mainCharacter.ArmorAndWeapon);
+                    break;
+                case "Назад":
+                    ChooseAction();
+                    break;
+                default:
+                    TraderOptions();
+                    break;
+
+
+            }
         }
     }
 
