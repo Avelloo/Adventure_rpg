@@ -84,6 +84,15 @@
                 options[options.Length - 1] = "Лучшие товары";
             }
             Array.Resize(ref options, options.Length + 2);
+            Console.WriteLine(@" 
+
+    По мере прокачки персонажа и повышения уровня
+    будут открываться новые товары у торговца:
+        Начальные - сразу,
+        Продвинутые - с 4 уровня,
+        Лучшие - с 7 уровня.
+
+");
             options[options.Length - 1] = "Назад";
 
             systemInterface.ColorWrite($"\nМонет доступно: [{currentGame.Character.Money}].\n",currentGame.Character.Money.ToString(),ConsoleColor.DarkYellow);

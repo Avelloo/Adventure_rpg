@@ -816,8 +816,7 @@
                 case "Целебное зелье":
                 case "Еда":
                     Console.WriteLine($" Восстанавливает [{HealConsumables.GetFoodHealInfo((HealConsumables)inventory.GetInventoryCell(index).thisItem)}] хп.");
-                    systemInterface.ColorWrite($" У вас сейчас {currentGame.Character.CurrentHealth}/{currentGame.Character.MaxHealth} хп.",
-                                                                 currentGame.Character.CurrentHealth.ToString(), ConsoleColor.DarkRed);
+                    Console.WriteLine();
                     Console.WriteLine("\n" + " Действия:");
                     switch (DrawMenuAndReturnAction(foodOptions))
                     {
