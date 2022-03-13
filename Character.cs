@@ -10,28 +10,48 @@
         int strength = 1;
         int agility = 1;
         int intelligence = 1;
+
+        int charLVL = 7;
         int currentExp = 0;
+        int expToNextLvl = 0;
+
         int currentAttack = 0;
         int currentDefence = 0;
-        int charLVL = 7;
+
+        
         int money = 100;
-        int maxHealth = 100;
+
+        int baseMaxHealth = 95;
+        int bonusHP = 0;
+        int maxHealth;
+
+        int evasionPercentage = 0;
+        int critChangePercentage = 0;
+        int critDamage = 150;
+
+        int initiative = 1;
+        int priceDiscount = 0;
 
         int currentHealth = 0;
         int playerDMG = 0;
-        int playerDefencePercentage = 0;
-
+        double playerIntakeDamage = 0;
+        double playerDefenceReduction = 0;
         int skillPoints = 1;
 
         public int CurrentHealth { get => currentHealth; set => currentHealth = value; }
         public int MaxHealth { get => maxHealth; set => maxHealth = value; }
         public int CurrentExp { get => currentExp; set => currentExp = value; }
         public int PlayerDMG { get => playerDMG; set => playerDMG = value; }
-        public int PlayerDefencePercentage { get => playerDefencePercentage; set => playerDefencePercentage = value; }
+        public double PlayerIntakeDamage { get => playerIntakeDamage; set => playerIntakeDamage = value; }
         public string Proffesion { get => proffesion; set => proffesion = value; }
         public int CharLVL { get => charLVL; set => charLVL = value; }
         public int Money { get => money; set => money = value; }
         public ArmorAndWeapon ArmorAndWeapon { get => armorAndWeapon; set => armorAndWeapon = value; }
+        public int EvasionPercentage { get => evasionPercentage; set => evasionPercentage = value; }
+        public int CritChangePercentage { get => critChangePercentage; set => critChangePercentage = value; }
+        public int CritDamage { get => critDamage; set => critDamage = value; }
+        public int Initiative { get => initiative; set => initiative = value; }
+        public int PriceDiscount { get => priceDiscount; set => priceDiscount = value; }
 
         public void CreateCharacter() //создание персонажа
         {
@@ -106,8 +126,8 @@
             }
 
             SpreadingPoints(skillPoints);
-            CurrentHealth = maxHealth;
-
+            RecalculateStats(ArmorAndWeapon);
+            currentHealth = maxHealth;
 
 
         }
@@ -118,7 +138,16 @@
             {
             selectPoints:
                 Console.Clear();
-                Console.WriteLine("Что будем качать?\nОчков осталось: {0}.\n", points);
+                systemInterface.ColorWrite(@"
+ Каждое очко силы выше 1 даёт вашему персонажу определённые бонусы:
+         За каждое очко силы персонаж получает +5 хп
+             за каждые 2 -> +1 к урону.
+         За каждое очко ловкости персонаж получает +2% к шансу крит. удара
+             За каждые 2 -> +2% к шансу уклонения.
+         За каждое очко интеллекта персонаж получает +1 к инициативе
+             за каждые 2 -> +5% к скидке у торговца (с округлением
+                                                    в большую сторону)","->",ConsoleColor.DarkYellow);
+                Console.WriteLine("\n На что потратите очки?\n Очков осталось: {0}.\n", points);
 
                 DisplayCharacterPoints();
                 Console.WriteLine("\n");
@@ -145,7 +174,7 @@
                     points += 1;
                     Console.WriteLine("Сила вкачана на максимум!");
                     Console.WriteLine("Нажмите любую клавишу, чтобы продолжить.");
-                    Console.ReadLine();
+                    Console.ReadKey();
                     goto selectPoints;
                 }
                 if (agility > 10)
@@ -154,7 +183,7 @@
                     points += 1;
                     Console.WriteLine("Ловкость вкачана на максимум!");
                     Console.WriteLine("Нажмите любую клавишу, чтобы продолжить.");
-                    Console.ReadLine();
+                    Console.ReadKey();
                     goto selectPoints;
                 }
                 if (intelligence > 10)
@@ -163,7 +192,7 @@
                     points += 1;
                     Console.WriteLine("Интеллект вкачан на максимум!");
                     Console.WriteLine("Нажмите любую клавишу, чтобы продолжить.");
-                    Console.ReadLine();
+                    Console.ReadKey();
                     goto selectPoints;
                 }
 
@@ -181,7 +210,7 @@
         void DisplayCharacterPoints()
         {
 
-            Console.Write("{0,-11}", "Сила:");
+            Console.Write("{0,-11}", " Сила:");
             for (int i = 1; i <= 10; i++)
             {
                 if (strength >= i)
@@ -193,7 +222,7 @@
                     Console.Write("( )");
                 }
             }
-            Console.Write("\n{0,-11}", "Ловкость:");
+            Console.Write("\n{0,-11}", " Ловкость:");
             for (int i = 1; i <= 10; i++)
             {
                 if (agility >= i)
@@ -205,7 +234,7 @@
                     Console.Write("( )");
                 }
             }
-            Console.Write("\n{0,-11}", "Интеллект:");
+            Console.Write("\n{0,-11}", " Интеллект:");
             for (int i = 1; i <= 10; i++)
             {
                 if (intelligence >= i)
@@ -221,11 +250,33 @@
 
 
 
+        public void RecalculateStats(ArmorAndWeapon armorAndWeapon)
+        {
+            bonusHP = strength * 5;
+            maxHealth = baseMaxHealth + bonusHP;
+            playerDMG = ForEveryNth(strength, 2);
 
+            critChangePercentage = agility*2;
+            evasionPercentage = ForEveryNth(agility, 2) * 2;
+
+            initiative = intelligence;
+            priceDiscount = ForEveryNth(intelligence, 2) * 5;
+
+            playerDefenceReduction = 0.015f * armorAndWeapon.GetDefenceCombined() + 0.05f;
+
+            
+            playerDefenceReduction = Math.Round(playerDefenceReduction, 2, MidpointRounding.AwayFromZero);
+            playerIntakeDamage = 1 - playerDefenceReduction;
+
+            currentAttack = armorAndWeapon.GetWeaponDamage() + playerDMG;
+            currentDefence = armorAndWeapon.GetDefenceCombined();
+
+
+        }
         public void Greetings(Game game) // вывод информации о игроке
         {
             Console.Clear();
-
+            RecalculateStats(ArmorAndWeapon);
 
             ConsoleColor color = ConsoleColor.White;
             switch (proffesion)
@@ -245,20 +296,24 @@
 
             }
 
-            systemInterface.ColorWrite($"Привет, {name}.\n", name, ConsoleColor.Blue);
-            systemInterface.ColorWrite($"У тебя сейчас {currentHealth}/{maxHealth} хп.\n", maxHealth.ToString(), ConsoleColor.Red);
-            systemInterface.ColorWrite($"Твой класс {proffesion}.\n", proffesion, color);
-            Console.Write("Твои статы:\n");
-            systemInterface.ColorWrite($"Сила: {strength}/10\n", "Сила", ConsoleColor.DarkRed);
-            systemInterface.ColorWrite($"Ловкость: {agility}/10\n", "Ловкость", ConsoleColor.DarkGreen);
-            systemInterface.ColorWrite($"Интеллект: {intelligence}/10\n", "Интеллект", ConsoleColor.DarkBlue);
+            systemInterface.ColorWrite($" Привет, {name}.\n", name, ConsoleColor.Blue);
+            systemInterface.ColorWrite($" У тебя сейчас {currentHealth}/{maxHealth} хп.\n", maxHealth.ToString(), ConsoleColor.Red);
+            systemInterface.ColorWrite($" Твой класс {proffesion}.\n\n", proffesion, color);
+            systemInterface.ColorWrite($" Всего урона: {currentAttack}.\n", currentAttack.ToString(), ConsoleColor.DarkRed);
+            systemInterface.ColorWrite($" Всего защиты: {currentDefence}. [-{playerDefenceReduction}%] к получаемому урону.\n"," " +  currentDefence.ToString() + ".", ConsoleColor.Cyan);
+            systemInterface.ColorWrite($" Сейчас у тебя {charLVL} уровень.\n", charLVL.ToString(), ConsoleColor.DarkGray);
+            systemInterface.ColorWrite($" Опыта до следующего уровня: {expToNextLvl}.\n", expToNextLvl.ToString(), ConsoleColor.Gray);
+            Console.Write(" Твои статы:");
+            systemInterface.ColorWrite($"\n Сила: {strength}/10\n Бонус к макс ХП: [{bonusHP-5}], бонус к урону: [{playerDMG}].\n\n", "Сила", ConsoleColor.DarkRed);
+            systemInterface.ColorWrite($" Ловкость: {agility}/10\n Шанс крит. удара: [{critChangePercentage}%], множитель: [{critDamage}%].\n\n", "Ловкость", ConsoleColor.DarkGreen);
+            systemInterface.ColorWrite($" Интеллект: {intelligence}/10\n Инициатива: [{initiative}], скидка у торговца: [{priceDiscount}%].\n\n", "Интеллект", ConsoleColor.DarkBlue);
             if (Money > 0)
             {
-                systemInterface.ColorWrite($"Твой кошель наполнен на [{Money}] золота.\n", "золота", ConsoleColor.Yellow);
+                systemInterface.ColorWrite($" Твой кошель наполнен на [{Money}] золота.\n", "золота", ConsoleColor.Yellow);
             }
             else
             {
-                systemInterface.ColorWrite($"У тебя нет золота. Совсем.\n", "золота", ConsoleColor.Yellow);
+                systemInterface.ColorWrite($" У тебя нет золота. Совсем.\n", "золота", ConsoleColor.Yellow);
             }
 
 
@@ -316,7 +371,18 @@
 
         }
 
-
+        int ForEveryNth(int number, int nth)
+        {
+            int result = 0;
+            for(int i = 1; i <= number; i++)
+            {
+                if(i % nth == 0)
+                {
+                    result++;
+                }
+            }
+            return result;
+        }
     }
 
 

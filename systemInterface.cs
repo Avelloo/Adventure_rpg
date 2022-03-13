@@ -260,7 +260,7 @@
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
                     prefix = "->";
-                    Console.WriteLine($"{prefix} {options[i],-17}");
+                    Console.WriteLine($"  {prefix} {options[i],-17}");
                     Console.ResetColor();
                 }
 
@@ -269,7 +269,7 @@
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.ForegroundColor = ConsoleColor.White;
                     prefix = "  ";
-                    Console.WriteLine($"{prefix} {options[i],-17}");
+                    Console.WriteLine($"  {prefix} {options[i],-17}");
                     Console.ResetColor();
                 }
             }
@@ -1056,6 +1056,15 @@
             }
             
         }
+        /// <summary>
+        /// Действие с выбранным предметом в инвентаре торговца
+        /// </summary>
+        /// <param name="inventory"></param>
+        /// <param name="trader"></param>
+        /// <param name="index"></param>
+        /// <param name="currentGame"></param>
+        /// <param name="armorAndWeapon"></param>
+        /// <param name="backAction"></param>
         static void TraderItemRemoveAction(InventorySystem inventory,Trader trader, int index, Game currentGame, ArmorAndWeapon armorAndWeapon, string backAction)
         {
             int amountToDelete = 0;

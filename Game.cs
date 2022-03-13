@@ -17,7 +17,7 @@ namespace Adventure_rpg
             mainCharacter.CreateCharacter();
             AddStartItems(mainCharacter);
             ChooseAction();
-            
+
             
             
         }
@@ -61,7 +61,7 @@ namespace Adventure_rpg
         }
         public void ChooseAction()
         {
-
+            mainCharacter.RecalculateStats(mainCharacter.ArmorAndWeapon);
             Console.Clear();
 
             CalculateDmgArmor(mainCharacter);
