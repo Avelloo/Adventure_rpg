@@ -1120,7 +1120,52 @@
             }
         }
 
-        
+        static public void DisplayShortCharInfo(Character character)
+        {
+            systemInterface.ColorWrite(" o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o\n", "o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o", ConsoleColor.DarkGray);
+            systemInterface.ColorWrite(" |", " |", ConsoleColor.DarkGray);
+            systemInterface.ColorWrite($"{character.Name,14}", character.Name, ConsoleColor.Magenta);
+            Console.Write(" . ");
+            Console.Write("[");
+            DisplayHealthBar(character);
+            Console.Write($"] {character.CurrentHealth,3}/{character.MaxHealth,-3} ХП");
+            Console.Write(" . ");
+            systemInterface.ColorWrite($"АТК:{character.CurrentAttack,-2}", character.CurrentAttack.ToString(), ConsoleColor.DarkGreen);
+            Console.Write(" . ");
+            systemInterface.ColorWrite($"ЗАЩ:{character.CurrentDefence,-2}", character.CurrentDefence.ToString(), ConsoleColor.DarkGreen);
+            Console.Write(" . ");
+            systemInterface.ColorWrite($"УР:{character.CharLVL,-2}", character.CharLVL.ToString(), ConsoleColor.DarkGreen);
+            Console.Write(" . ");
+            systemInterface.ColorWrite($"До след УР:{character.ExpToNextLvl,-4}", character.ExpToNextLvl.ToString(), ConsoleColor.Green);
+            Console.Write(" . ");
+            systemInterface.ColorWrite($"ДЕНЬГ:{character.Money,-4}", character.Money.ToString(), ConsoleColor.DarkYellow);
+            systemInterface.ColorWrite("|", "|", ConsoleColor.DarkGray);
+            Console.WriteLine();
+            systemInterface.ColorWrite(" o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o\n", "o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o", ConsoleColor.DarkGray);
+            Console.WriteLine();
+        }
+
+        static public void DisplayHealthBar(Character character)
+        {
+            double percentage = ((double)character.CurrentHealth / (double)character.MaxHealth);
+            percentage = Math.Round(percentage, 2);
+            percentage *= 100;
+            for(int i = 0; i < 10; i++)
+            {
+                if(percentage > i * 10)
+                {
+                    systemInterface.ColorWrite("█", "█", ConsoleColor.Red);
+                }
+                else if(percentage < i * 10 && percentage > (i-1) * 10)
+                {
+                    systemInterface.ColorWrite("█", "█", ConsoleColor.DarkRed);
+                }
+                else
+                {
+                    Console.Write("_");
+                }
+            }
+        }
     }
 
 }

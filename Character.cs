@@ -52,6 +52,10 @@
         public int CritDamage { get => critDamage; set => critDamage = value; }
         public int Initiative { get => initiative; set => initiative = value; }
         public int PriceDiscount { get => priceDiscount; set => priceDiscount = value; }
+        public string Name { get => name; set => name = value; }
+        public int ExpToNextLvl { get => expToNextLvl; set => expToNextLvl = value; }
+        public int CurrentAttack { get => currentAttack; set => currentAttack = value; }
+        public int CurrentDefence { get => currentDefence; set => currentDefence = value; }
 
         public void CreateCharacter() //создание персонажа
         {
@@ -72,7 +76,7 @@
                 {
 
                     case "Ввести имя":
-                        Console.WriteLine("\nВведите имя: ");
+                        Console.WriteLine("\nВведите имя (не более 15 символов): ");
                         name = Console.ReadLine();
                         break;
                     case "Сгенерировать имя":
@@ -85,7 +89,7 @@
 
 
 
-                if (name != null && name != "" && name.Trim().Length > 1) nameSelected = true;            
+                if (name != null && name != "" && name.Length <= 15 && name.Trim().Length > 1) nameSelected = true;            
             
             }
 
@@ -127,7 +131,7 @@
 
             SpreadingPoints(skillPoints);
             RecalculateStats(ArmorAndWeapon);
-            currentHealth = maxHealth;
+            currentHealth = maxHealth-35;
 
 
         }
@@ -262,10 +266,10 @@
             initiative = intelligence;
             priceDiscount = ForEveryNth(intelligence, 2) * 5;
 
-            playerDefenceReduction = 0.015f * armorAndWeapon.GetDefenceCombined() + 0.05f;
+            playerDefenceReduction = 0.015f * armorAndWeapon.GetDefenceCombined();
 
             
-            playerDefenceReduction = Math.Round(playerDefenceReduction, 2, MidpointRounding.AwayFromZero);
+            playerDefenceReduction = Math.Round(playerDefenceReduction, 2, MidpointRounding.AwayFromZero) * 100;
             playerIntakeDamage = 1 - playerDefenceReduction;
 
             currentAttack = armorAndWeapon.GetWeaponDamage() + playerDMG;

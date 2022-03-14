@@ -14,6 +14,7 @@ namespace Adventure_rpg
 
         public void Gameplay()
         {
+            
             mainCharacter.CreateCharacter();
             AddStartItems(mainCharacter);
             ChooseAction();
@@ -64,9 +65,9 @@ namespace Adventure_rpg
             mainCharacter.RecalculateStats(mainCharacter.ArmorAndWeapon);
             Console.Clear();
 
-            CalculateDmgArmor(mainCharacter);
+            systemInterface.DisplayShortCharInfo(mainCharacter);
 
-            Console.WriteLine("Выберите, что хотите сделать:");
+            Console.WriteLine(" Выберите, что хотите сделать:");
             switch (systemInterface.DrawMenuAndReturnAction(new string[] { "Идти в бой", "Зайти к торговцу","О персонаже","Сохранить игру","","","Выйти из игры" }))
             {
                 case "Идти в бой":
@@ -97,12 +98,8 @@ namespace Adventure_rpg
                     break;
             }
         }
-        public void CalculateDmgArmor(Character character)
-        {
-            Console.WriteLine("Твои статы:");
-            Console.WriteLine($"Урон: {character.ArmorAndWeapon.GetWeaponDamage()}");
-            Console.WriteLine($"Защита: {character.ArmorAndWeapon.GetDefenceCombined()}");
-        }
+
+
         public void TraderOptions()
         {
             Console.Clear();
