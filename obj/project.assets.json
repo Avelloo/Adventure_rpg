@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\aloob\\Desktop\\Adventure_rpg\\Adventure_rpg\\Adventure_rpg.csproj",
+      "projectUniqueName": "C:\\Users\\aloob\\Desktop\\GitHub\\Adventure_rpg.csproj",
       "projectName": "Adventure_rpg",
-      "projectPath": "C:\\Users\\aloob\\Desktop\\Adventure_rpg\\Adventure_rpg\\Adventure_rpg.csproj",
+      "projectPath": "C:\\Users\\aloob\\Desktop\\GitHub\\Adventure_rpg.csproj",
       "packagesPath": "C:\\Users\\aloob\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\aloob\\Desktop\\Adventure_rpg\\Adventure_rpg\\obj\\",
+      "outputPath": "C:\\Users\\aloob\\Desktop\\GitHub\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -65,7 +65,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
       }
     }
   }
