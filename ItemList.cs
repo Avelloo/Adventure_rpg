@@ -52,7 +52,7 @@
         static HealConsumables largeHealPotion = new HealConsumables("Большое зелье лечения", "Сразу станет лучше", "Целебное зелье", 15, 40, 15, 8);
 
 
-
+        
 
         public static Dictionary<string, Item> allItems = new Dictionary<string, Item>()
         {

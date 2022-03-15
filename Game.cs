@@ -72,7 +72,6 @@ namespace Adventure_rpg
             {
                 case "Идти в бой":
                     Console.Clear();
-                    Console.WriteLine("Ещё не сделано");
                     ChooseAction();
                     break;
                 case "Зайти к торговцу":

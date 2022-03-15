@@ -2,7 +2,7 @@
 {
     class systemInterface
     {
-
+        
         public static void threadedWrite(string text, int delay)//Вывод текста с задержкой
         {
             foreach (char ch in text)
@@ -1165,6 +1165,12 @@
                     Console.Write("_");
                 }
             }
+        }
+
+        public static int GetRandomNumberInInterval(int start, int end)
+        {
+            Random rand = new Random();
+            return rand.Next(start,end);
         }
     }
 

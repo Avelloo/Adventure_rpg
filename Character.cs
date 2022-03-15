@@ -72,6 +72,7 @@
                                                            suck some dick    
                                                                ");
                 Console.WriteLine("Привет! Начинаем создание персонажа.");
+                
                 switch (systemInterface.DrawMenuAndReturnAction(new string[] { "Ввести имя", "Сгенерировать имя" }))
                 {
 
@@ -97,9 +98,9 @@
 
             Console.Clear();
             Console.WriteLine("Выберите класс:");
-            systemInterface.ColorWrite(" Воин     - герой ближнего боя,\n\t +1 к силе со старта игры, может использовать мечи.\n", "Воин", ConsoleColor.Red);
-            systemInterface.ColorWrite("\n Маг      - герой дальнего боя,\n\t +1 к инт. со старта игры, может использовать магическое оружие.\n", "Маг", ConsoleColor.Blue);
-            systemInterface.ColorWrite("\n Лучник   - герой дальнего боя,\n\t +1 к ловкости со старта игры, может использовать лук.\n", "Лучник", ConsoleColor.Green);
+            systemInterface.ColorWrite(" Воин     - герой ближнего боя,\n\t +1 к силе со старта игры, может использовать только мечи.\n", "Воин", ConsoleColor.Red);
+            systemInterface.ColorWrite("\n Маг      - герой дальнего боя,\n\t +1 к инт. со старта игры, может использовать только магическое оружие.\n", "Маг", ConsoleColor.Blue);
+            systemInterface.ColorWrite("\n Лучник   - герой дальнего боя,\n\t +1 к ловкости со старта игры, может использовать только лук.\n", "Лучник", ConsoleColor.Green);
             systemInterface.ColorWrite("\n Странник - герой универсал,\n\t -1 к навыкам для распределения, может использовать все типы оружия.", "Странник", ConsoleColor.DarkMagenta);
             Console.WriteLine("\n\nТвой выбор: \n");
 
@@ -143,7 +144,7 @@
             selectPoints:
                 Console.Clear();
                 systemInterface.ColorWrite(@"
- Каждое очко силы выше 1 даёт вашему персонажу определённые бонусы:
+ Каждое очко навыков даёт вашему персонажу определённые бонусы:
          За каждое очко силы персонаж получает +5 хп
              за каждые 2 -> +1 к урону.
          За каждое очко ловкости персонаж получает +2% к шансу крит. удара
@@ -275,13 +276,13 @@
             currentAttack = armorAndWeapon.GetWeaponDamage() + playerDMG;
             currentDefence = armorAndWeapon.GetDefenceCombined();
 
-
+            
         }
         public void Greetings(Game game) // вывод информации о игроке
         {
             Console.Clear();
             RecalculateStats(ArmorAndWeapon);
-
+            
             ConsoleColor color = ConsoleColor.White;
             switch (proffesion)
             {
@@ -301,7 +302,7 @@
             }
 
             systemInterface.ColorWrite($" Привет, {name}.\n", name, ConsoleColor.Blue);
-            systemInterface.ColorWrite($" У тебя сейчас {currentHealth}/{maxHealth} хп.\n", maxHealth.ToString(), ConsoleColor.Red);
+            systemInterface.ColorWrite($" У тебя сейчас {currentHealth}/{maxHealth} хп.\n", currentHealth.ToString() + "/" + maxHealth.ToString(), ConsoleColor.Red); ;
             systemInterface.ColorWrite($" Твой класс {proffesion}.\n\n", proffesion, color);
             systemInterface.ColorWrite($" Всего урона: {currentAttack}.\n", currentAttack.ToString(), ConsoleColor.DarkRed);
             systemInterface.ColorWrite($" Всего защиты: {currentDefence}. [-{playerDefenceReduction}%] к получаемому урону.\n"," " +  currentDefence.ToString() + ".", ConsoleColor.Cyan);
