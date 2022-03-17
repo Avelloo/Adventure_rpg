@@ -3,6 +3,7 @@
 
     public class Character
     {
+
         public InventorySystem characterInventory = new InventorySystem(10);
         private ArmorAndWeapon armorAndWeapon = new ArmorAndWeapon();
         string name = "";
@@ -132,7 +133,7 @@
 
             SpreadingPoints(skillPoints);
             RecalculateStats(ArmorAndWeapon);
-            currentHealth = maxHealth-35;
+            currentHealth = 1;
 
 
         }
@@ -282,7 +283,6 @@
         {
             Console.Clear();
             RecalculateStats(ArmorAndWeapon);
-            
             ConsoleColor color = ConsoleColor.White;
             switch (proffesion)
             {

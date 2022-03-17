@@ -8,7 +8,7 @@ namespace Adventure_rpg
 {
     public class Enemy
     {
-        public int enemyHP;
+        public int enemyMaxHP;
         public int enemyATK;
         public int enemyInitiative;
         public string enemyName;
@@ -18,7 +18,7 @@ namespace Adventure_rpg
 
         public Enemy(int enemyHP, int enemyATK, int enemyInitiative, string enemyName, string enemyType,string enemyDescription, string enemyImage)
         {
-            this.enemyHP = enemyHP;
+            this.enemyMaxHP = enemyHP;
             this.enemyATK = enemyATK;
             this.enemyInitiative = enemyInitiative;
             this.enemyName = enemyName;

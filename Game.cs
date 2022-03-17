@@ -72,6 +72,8 @@ namespace Adventure_rpg
             {
                 case "Идти в бой":
                     Console.Clear();
+                    Battle battle = new Battle();
+                    battle.StartBattle(mainCharacter, 1);
                     ChooseAction();
                     break;
                 case "Зайти к торговцу":

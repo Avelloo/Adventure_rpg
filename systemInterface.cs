@@ -2,7 +2,7 @@
 {
     class systemInterface
     {
-        
+
         public static void threadedWrite(string text, int delay)//Вывод текста с задержкой
         {
             foreach (char ch in text)
@@ -64,11 +64,11 @@
             {
                 for (int i = 0; i < postfix.Length; i++)
                 {
-                    if(ItemList.getItemByName(ItemList.allItems, options[i]) != null)
+                    if (ItemList.getItemByName(ItemList.allItems, options[i]) != null)
                     {
                         postfix[i] = $"Цена: [{ItemList.getItemByName(ItemList.allItems, options[i]).buyPrice.ToString(),2}]";
                     }
-                    
+
                 }
             }
             string prefix = " ";
@@ -180,7 +180,7 @@
 
             options[inventory.GetMaxSlots() + 1] = "Назад";
 
-            DrawInventoryMenu(options, slotAmount, currentIndex, false,false);
+            DrawInventoryMenu(options, slotAmount, currentIndex, false, false);
             while (selected == false)
             {
                 ConsoleKeyInfo keyPressed = Console.ReadKey();
@@ -230,7 +230,7 @@
                     currentIndex = options.Length - 1;
                 }
 
-                DrawInventoryMenu(options, slotAmount, currentIndex, true,false);
+                DrawInventoryMenu(options, slotAmount, currentIndex, true, false);
 
 
             }
@@ -274,6 +274,46 @@
                 }
             }
         }
+        static void DrawEnemies(EnemyCell[] enemiesToFight, int index, bool erase)
+        {
+            string prefix = "";
+            if (erase) ClearLines(enemiesToFight.Length);
+            for (int i = 0; i < enemiesToFight.Length; i++)
+            {
+
+                if (i == index)
+                {
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    prefix = "->";
+                    if(enemiesToFight[i].EnemyCurrentHP > 0)
+                    {
+                        Console.WriteLine($"{prefix} {enemiesToFight[i].thisEnemy.enemyName,-17} ХП:{enemiesToFight[i].EnemyCurrentHP}/{enemiesToFight[i].thisEnemy.enemyMaxHP}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"  {prefix} {enemiesToFight[i].thisEnemy.enemyName,-17} Мёртв");
+                    }
+                    Console.ResetColor();
+                }
+
+                else
+                {
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    prefix = "  ";
+                    if (enemiesToFight[i].EnemyCurrentHP > 0)
+                    {
+                        Console.WriteLine($"{prefix} {enemiesToFight[i].thisEnemy.enemyName,-17} ХП:{enemiesToFight[i].EnemyCurrentHP}/{enemiesToFight[i].thisEnemy.enemyMaxHP}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"  {prefix} {enemiesToFight[i].thisEnemy.enemyName,-17} Мёртв");
+                    }
+                    Console.ResetColor();
+                }
+            }
+        }
         /// <summary>
         /// Информация о предмете в инвентаре и действия с ним
         /// </summary>
@@ -285,8 +325,8 @@
         /// <param name="currentGame"></param>
         static void DisplaySelectedItemInfo(InventorySystem inventory, ArmorAndWeapon armorAndWeapon, int index, bool canSell, string backAction, Game currentGame)
         {
-            string[] foodOptions = { "Использовать"};
-            string[] armorAmdWeaponOptions = { "Экипировать", "Сравнить"};
+            string[] foodOptions = { "Использовать" };
+            string[] armorAmdWeaponOptions = { "Экипировать", "Сравнить" };
             if (canSell)
             {
                 Array.Resize(ref foodOptions, foodOptions.Length + 1);
@@ -722,6 +762,46 @@
             }
             return "";
         }
+        public static EnemyCell DrawEnemiesAndReturnChosen(EnemyCell[] enemiesToFight)
+        {
+            int index = 0;
+            bool selected = false;
+            string[] options = new string[enemiesToFight.Length];
+            options = enemiesToFight.Select(x => x.thisEnemy.enemyName + " хп:" + x.EnemyCurrentHP).ToArray();
+            DrawEnemies(enemiesToFight, index, false);
+            while (selected == false)
+            {
+                ConsoleKeyInfo keyPressed = Console.ReadKey();
+                switch (keyPressed.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        index--;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        index++;
+                        break;
+                    case ConsoleKey.Enter:
+                        if(enemiesToFight[index].EnemyCurrentHP > 0)
+                        {
+                            selected = true;
+                            return enemiesToFight[index];
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                if (index > options.Length - 1)
+                {
+                    index = 0;
+                }
+                else if (index < 0)
+                {
+                    index = options.Length - 1;
+                }
+                DrawEnemies(enemiesToFight, index, true);
+            }
+            return null;
+        }
         /// <summary>
         /// Попытка лечения
         /// </summary>
@@ -790,7 +870,7 @@
         /// <param name="trader"></param>
         static void TraderDisplaySelectedItemInfo(InventorySystem inventory, int index, string backAction, Game currentGame, ArmorAndWeapon armorAndWeapon, Trader trader)
         {
-           
+
             string[] foodOptions = { "Купить" };
             string[] armorAmdWeaponOptions = { "Купить", "Сравнить" };
 
@@ -847,7 +927,7 @@
                             break;
                         case "Назад":
                             Console.Clear();
-                            TraderInventorySelectMenu(inventory, backAction, currentGame, armorAndWeapon,trader);
+                            TraderInventorySelectMenu(inventory, backAction, currentGame, armorAndWeapon, trader);
                             break;
                     }
 
@@ -861,14 +941,14 @@
                         case "Сравнить":
                             Console.Clear();
                             CompareWearings(inventory.GetInventoryCell(index).thisItem, armorAndWeapon);
-                            TraderInventorySelectMenu(inventory, backAction, currentGame, armorAndWeapon,trader);
+                            TraderInventorySelectMenu(inventory, backAction, currentGame, armorAndWeapon, trader);
                             break;
                         case "Купить":
-                            TraderItemRemoveAction(inventory, trader, index, currentGame, armorAndWeapon,backAction);
+                            TraderItemRemoveAction(inventory, trader, index, currentGame, armorAndWeapon, backAction);
                             break;
                         case "Назад":
                             Console.Clear();
-                            TraderInventorySelectMenu(inventory, backAction, currentGame, armorAndWeapon,trader);
+                            TraderInventorySelectMenu(inventory, backAction, currentGame, armorAndWeapon, trader);
                             break;
                     }
                     break;
@@ -921,7 +1001,7 @@
 
             options[inventory.GetMaxSlots() + 1] = "Назад";
 
-            DrawInventoryMenu(options, slotAmount, currentIndex, false,true);
+            DrawInventoryMenu(options, slotAmount, currentIndex, false, true);
             while (selected == false)
             {
                 ConsoleKeyInfo keyPressed = Console.ReadKey();
@@ -938,7 +1018,7 @@
                         if (currentIndex < inventory.GetMaxSlots() && inventory.IsCellExist(currentIndex))
                         {
                             selected = true;
-                            TraderDisplaySelectedItemInfo(inventory, currentIndex, backAction, currentGame, armorAndWeapon,trader);
+                            TraderDisplaySelectedItemInfo(inventory, currentIndex, backAction, currentGame, armorAndWeapon, trader);
                             continue;
                         }
                         else if (currentIndex == inventory.GetMaxSlots() + 1)
@@ -973,7 +1053,7 @@
                     currentIndex = options.Length - 1;
                 }
 
-                DrawInventoryMenu(options, slotAmount, currentIndex, true,true);
+                DrawInventoryMenu(options, slotAmount, currentIndex, true, true);
 
 
             }
@@ -990,7 +1070,7 @@
         /// <param name="action"></param>
         /// <param name="canSell"></param>
         /// <param name="backAction"></param>
-        static void ItemRemoveAction(InventorySystem inventory,int index, Game currentGame, ArmorAndWeapon armorAndWeapon, string action, bool canSell, string backAction)
+        static void ItemRemoveAction(InventorySystem inventory, int index, Game currentGame, ArmorAndWeapon armorAndWeapon, string action, bool canSell, string backAction)
         {
             int amountToDelete = 0;
             if (inventory.GetInventoryCell(index).Quantity > 1)
@@ -1014,7 +1094,7 @@
                         int plusMoney = amountToDelete * inventory.GetInventoryCell(index).thisItem.sellPrice;
                         currentGame.Character.Money += plusMoney;
                         Console.Clear();
-                        if(amountToDelete > 1)
+                        if (amountToDelete > 1)
                         {
                             Console.WriteLine($"Вы продали [{inventory.GetInventoryCell(index).thisItem.name}] в кол-ве {amountToDelete}\nи получили за это [{plusMoney}] монет.");
                         }
@@ -1022,7 +1102,7 @@
                         {
                             Console.WriteLine($"Вы продали [{inventory.GetInventoryCell(index).thisItem.name}] за [{plusMoney}] монет.");
                         }
-                        
+
                         Console.WriteLine($"Нажмите любую клавишу, чтобы продолжить.");
                         Console.ReadKey();
                         inventory.removeItemFromInventory(inventory.GetInventoryCell(index).thisItem, amountToDelete);
@@ -1054,7 +1134,7 @@
                     }
                     break;
             }
-            
+
         }
         /// <summary>
         /// Действие с выбранным предметом в инвентаре торговца
@@ -1065,12 +1145,12 @@
         /// <param name="currentGame"></param>
         /// <param name="armorAndWeapon"></param>
         /// <param name="backAction"></param>
-        static void TraderItemRemoveAction(InventorySystem inventory,Trader trader, int index, Game currentGame, ArmorAndWeapon armorAndWeapon, string backAction)
+        static void TraderItemRemoveAction(InventorySystem inventory, Trader trader, int index, Game currentGame, ArmorAndWeapon armorAndWeapon, string backAction)
         {
             int amountToDelete = 0;
             if (inventory.GetInventoryCell(index).Quantity > 1)
             {
-                
+
                 Console.WriteLine($"Введите количество, которое хотите купить.\n(Всего {inventory.GetInventoryCell(index).thisItem.name} доступно: {inventory.CountItem(inventory.GetInventoryCell(index).thisItem)}.)");
                 if (!Int32.TryParse(Console.ReadLine(), out amountToDelete))
                 {
@@ -1148,15 +1228,16 @@
         static public void DisplayHealthBar(Character character)
         {
             double percentage = ((double)character.CurrentHealth / (double)character.MaxHealth);
+            if (percentage < 0.01) percentage = 0;
             percentage = Math.Round(percentage, 2);
             percentage *= 100;
-            for(int i = 0; i < 10; i++)
+            for (int i = 0; i < 10; i++)
             {
-                if(percentage > i * 10)
+                if (percentage > i * 10)
                 {
                     systemInterface.ColorWrite("█", "█", ConsoleColor.Red);
                 }
-                else if(percentage < i * 10 && percentage > (i-1) * 10)
+                else if (percentage < i * 10 && percentage > (i - 1) * 10)
                 {
                     systemInterface.ColorWrite("█", "█", ConsoleColor.DarkRed);
                 }
@@ -1170,7 +1251,16 @@
         public static int GetRandomNumberInInterval(int start, int end)
         {
             Random rand = new Random();
-            return rand.Next(start,end);
+            return rand.Next(start, end);
+        }
+
+        public static bool CheckForAliveEnemiesAndUpdateAttackStatus(EnemyCell[] enemiesToFight)
+        {
+            for (int i = 0; i < enemiesToFight.Length; i++)
+            {
+                if (enemiesToFight[i].EnemyCurrentHP < 1) enemiesToFight[i].CanAttack = false;
+            }
+            return enemiesToFight.ToList().Exists(x => x.EnemyCurrentHP > 0) ? true : false;
         }
     }
 
