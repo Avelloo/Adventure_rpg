@@ -15,8 +15,9 @@ namespace Adventure_rpg
         public string enemyType;
         public string enemyImage;
         public string enemyDescription;
+        public int goldDrop;
 
-        public Enemy(int enemyHP, int enemyATK, int enemyInitiative, string enemyName, string enemyType,string enemyDescription, string enemyImage)
+        public Enemy(int enemyHP, int enemyATK, int enemyInitiative,int goldDrop, string enemyName, string enemyType,string enemyDescription, string enemyImage)
         {
             this.enemyMaxHP = enemyHP;
             this.enemyATK = enemyATK;
@@ -25,13 +26,13 @@ namespace Adventure_rpg
             this.enemyType = enemyType;
             this.enemyDescription = enemyDescription;
             this.enemyImage = enemyImage;
-
+            this.goldDrop = goldDrop;
         }
     }
 
     public class EnemyInitialization
     {
-        static Enemy skeleton = new Enemy(10, 3, 3, "Скелет", "Undead", "Раньше был живым.. теперь нет (:", @"      .-.
+        static Enemy skeleton = new Enemy(10, 3, 3,3, "Скелет", "Undead", "Раньше был живым.. теперь нет (:", @"      .-.
      (o.o)
       |=|
      __|__
@@ -45,7 +46,7 @@ namespace Adventure_rpg
      || ||
      || ||
    (==' '==");
-        static Enemy pidoras = new Enemy(10, 3, 3, "Пидрила", "Undead", "Раньше был живым.. теперь нет (:", @"      .-.
+        static Enemy pidoras = new Enemy(10, 3, 3,3, "Пидрила", "Undead", "Раньше был живым.. теперь нет (:", @"      .-.
      (o.o)
       |=|
      __|__

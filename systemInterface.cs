@@ -288,11 +288,11 @@
                     prefix = "->";
                     if(enemiesToFight[i].EnemyCurrentHP > 0)
                     {
-                        Console.WriteLine($"{prefix} {enemiesToFight[i].thisEnemy.enemyName,-17} ХП:{enemiesToFight[i].EnemyCurrentHP}/{enemiesToFight[i].thisEnemy.enemyMaxHP}");
+                        Console.WriteLine($"[#{i+1}] {enemiesToFight[i].thisEnemy.enemyName,-17} ХП:{enemiesToFight[i].EnemyCurrentHP}/{enemiesToFight[i].thisEnemy.enemyMaxHP}");
                     }
                     else
                     {
-                        Console.WriteLine($"  {prefix} {enemiesToFight[i].thisEnemy.enemyName,-17} Мёртв");
+                        Console.WriteLine($"#{i + 1}] {enemiesToFight[i].thisEnemy.enemyName,-17} Мёртв");
                     }
                     Console.ResetColor();
                 }
@@ -304,11 +304,11 @@
                     prefix = "  ";
                     if (enemiesToFight[i].EnemyCurrentHP > 0)
                     {
-                        Console.WriteLine($"{prefix} {enemiesToFight[i].thisEnemy.enemyName,-17} ХП:{enemiesToFight[i].EnemyCurrentHP}/{enemiesToFight[i].thisEnemy.enemyMaxHP}");
+                        Console.WriteLine($"[#{i + 1}] {enemiesToFight[i].thisEnemy.enemyName,-17} ХП:{enemiesToFight[i].EnemyCurrentHP}/{enemiesToFight[i].thisEnemy.enemyMaxHP}");
                     }
                     else
                     {
-                        Console.WriteLine($"  {prefix} {enemiesToFight[i].thisEnemy.enemyName,-17} Мёртв");
+                        Console.WriteLine($"#{i + 1}] {enemiesToFight[i].thisEnemy.enemyName,-17} Мёртв");
                     }
                     Console.ResetColor();
                 }

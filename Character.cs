@@ -133,7 +133,7 @@
 
             SpreadingPoints(skillPoints);
             RecalculateStats(ArmorAndWeapon);
-            currentHealth = 1;
+            currentHealth = maxHealth;
 
 
         }
@@ -258,6 +258,7 @@
 
         public void RecalculateStats(ArmorAndWeapon armorAndWeapon)
         {
+            double prePlayerDefenceReduction;
             bonusHP = strength * 5;
             maxHealth = baseMaxHealth + bonusHP;
             playerDMG = ForEveryNth(strength, 2);
@@ -268,11 +269,11 @@
             initiative = intelligence;
             priceDiscount = ForEveryNth(intelligence, 2) * 5;
 
-            playerDefenceReduction = 0.015f * armorAndWeapon.GetDefenceCombined();
+            prePlayerDefenceReduction = 0.015f * armorAndWeapon.GetDefenceCombined();
 
             
-            playerDefenceReduction = Math.Round(playerDefenceReduction, 2, MidpointRounding.AwayFromZero) * 100;
-            playerIntakeDamage = 1 - playerDefenceReduction;
+            playerDefenceReduction = Math.Round(prePlayerDefenceReduction, 2, MidpointRounding.AwayFromZero) * 100;
+            playerIntakeDamage = 1 - prePlayerDefenceReduction;
 
             currentAttack = armorAndWeapon.GetWeaponDamage() + playerDMG;
             currentDefence = armorAndWeapon.GetDefenceCombined();

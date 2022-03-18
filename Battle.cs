@@ -3,17 +3,18 @@
     public class Battle
     {
         private bool escaped;
-        private bool endBattle;
+        private string endBattle;
         public EnemyCell[] enemyCells;
+        public Enemy[] enemiesToFight;
         public bool Escaped { get => escaped; set => escaped = value; }
-        public bool EndBattle { get => endBattle; set => endBattle = value; }
         public int phase = 1;
+        public int goldAward = 0;
         public void StartBattle(Character character, int difficulty)
         {
             Escaped = false;
             Dictionary<string, Enemy> enemiesToChoose;
             int numberOfEnemies = 0;
-            Enemy[] enemiesToFight;
+            
             switch (difficulty)
             {
                 case 1:
@@ -44,13 +45,33 @@
             }
 
 
-            while (!endBattle)
+            while (endBattle == null)
             {
 
                 BattlePhase(character, enemyCells);
                 Console.Clear();
 
             }
+
+            switch (endBattle)
+            {
+                case "Победа":
+                    Console.Clear();
+                    systemInterface.ColorWrite($"Вы победили! Награда за сражение - {goldAward} золота.\n", goldAward.ToString(), ConsoleColor.DarkYellow);
+                    Console.WriteLine("Нажмите любую клавишу, чтобы продолжить.");
+                    character.Money += goldAward;
+                    Console.ReadKey();
+                    break;
+                case "Поражение":
+                    Console.Clear();
+                    systemInterface.ColorWrite($"Вы проиграли! Вы лишаетесь всех денег!\n", "всех денег", ConsoleColor.DarkRed);
+                    Console.WriteLine("Нажмите любую клавишу, чтобы продолжить.");
+                    character.CurrentHealth = character.MaxHealth / 2;
+                    character.Money = 0;
+                    Console.ReadKey();
+                    break;
+            }
+
         }
         void BattlePhase(Character character, EnemyCell[] enemyCell)
         {
@@ -75,13 +96,14 @@
                     Console.Clear();
                     systemInterface.ColorWrite($"{character.Name} наносит {chosenEnemy.thisEnemy.enemyName} {character.CurrentAttack} урона!\n", character.Name, ConsoleColor.Blue);
                     Console.WriteLine($"{chosenEnemy.thisEnemy.enemyName} умер!");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(250);
                     systemInterface.ClearLines(1);
                 }
                 else
                 {
                     systemInterface.ClearLines(enemyCells.Length + 4);
                     systemInterface.ColorWrite($"{character.Name} наносит {chosenEnemy.thisEnemy.enemyName} {character.CurrentAttack} урона!\n", character.Name, ConsoleColor.Blue);
+                    Thread.Sleep(250);
                 }
 
                
@@ -90,24 +112,30 @@
             }
             else
             {
-                endBattle = true;
+                foreach(Enemy n in enemiesToFight)
+                {
+                    goldAward += n.goldDrop;
+                }
+                endBattle = "Победа";
             }
             for (int i = 0; i < enemyCells.Length; i++)
             {
                 if (enemyCells[i].CanAttack)
                 {
-                    Thread.Sleep(500);
-                    Console.WriteLine($"{enemyCells[i].thisEnemy.enemyName} наносит вам {enemyCells[i].thisEnemy.enemyATK} урона!");
-                    character.CurrentHealth -= enemyCells[i].thisEnemy.enemyATK;
-                    Thread.Sleep(500);
+                    Thread.Sleep(250);
+                    double intakeDamage = enemyCells[i].thisEnemy.enemyATK * character.PlayerIntakeDamage;
+                    Console.WriteLine($"[#{i+1}] {enemyCells[i].thisEnemy.enemyName} наносит вам {(int)intakeDamage}" +
+                        $"(-{enemyCells[i].thisEnemy.enemyATK - (int)intakeDamage}) урона!");
+                    character.CurrentHealth -= (int)intakeDamage;
+                    Thread.Sleep(250);
                 }
 
             }
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
             if (character.CurrentHealth <= 0)
             {
 
-                endBattle = true;
+                endBattle = "Поражение";
             }
 
 
