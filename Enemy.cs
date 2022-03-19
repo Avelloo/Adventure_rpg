@@ -46,7 +46,7 @@ namespace Adventure_rpg
      || ||
      || ||
    (==' '==");
-        static Enemy pidoras = new Enemy(10, 3, 3,3, "Пидрила", "Undead", "Раньше был живым.. теперь нет (:", @"      .-.
+        static Enemy spider = new Enemy(10, 3, 3,3, "Паук", "Undead", "Раньше был живым.. теперь нет (:", @"      .-.
      (o.o)
       |=|
      __|__
@@ -64,7 +64,7 @@ namespace Adventure_rpg
         public static Dictionary<string, Enemy> easyEnemies = new Dictionary<string, Enemy>
         {
             {"skeleton",skeleton },
-            {"pidoras",pidoras }
+            {"spider",spider }
         };
     }
 }
