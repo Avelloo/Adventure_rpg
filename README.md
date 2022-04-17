@@ -18,11 +18,15 @@ Console c# rpg
     - Несколько сложностей (меняются враги и шанс на доп. врага)
     - Победа\проигрыш
   
+  <sub><sup></sup></sub>
+  <sub><sup></sup></sub>
+  <sub><sup></sup></sub>
+  <sub><sup></sup></sub>
+  <sub><sup></sup></sub>
+  <sub><sup></sup></sub>
+  
  <img src="https://c.tenor.com/Q6O6FN8oaGkAAAAd/dance-party-cat.gif" width="40" height="40" />
-  <img src="https://c.tenor.com/Q6O6FN8oaGkAAAAd/dance-party-cat.gif" width="40" height="40" />
-   <img src="https://c.tenor.com/Q6O6FN8oaGkAAAAd/dance-party-cat.gif" width="40" height="40" />
-    <img src="https://c.tenor.com/Q6O6FN8oaGkAAAAd/dance-party-cat.gif" width="40" height="40" />
-     <img src="https://c.tenor.com/Q6O6FN8oaGkAAAAd/dance-party-cat.gif" width="40" height="40" />
+
 
  
-  <sub><sup>код полное говно</sup></sub>
+  
